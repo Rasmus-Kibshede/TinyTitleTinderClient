@@ -1,8 +1,13 @@
-const Home = () => {
+import ButtonAppBar from '../../components/ui/Appbar'
+import SignIn from '../../components/ui/Signin'
+
+function Home() {
     return (
-        <h1 className="text-3xl font-bold underline">
-            Hello world!
-        </h1>
+        // Using MUI, create a title of our app that says "Tiny Title Tinder"
+        <div>
+            <ButtonAppBar />
+            <SignIn></SignIn>
+        </div>
     )
 }
 
