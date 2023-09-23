@@ -4,10 +4,10 @@ import SignIn from '../../components/ui/Signin'
 function Home() {
     return (
         // Using MUI, create a title of our app that says "Tiny Title Tinder"
-        <div>
-            <ButtonAppBar />
-            <SignIn></SignIn>
-        </div>
+        <>
+            <ButtonAppBar/>
+            <SignIn/>
+        </>
     )
 }
 
