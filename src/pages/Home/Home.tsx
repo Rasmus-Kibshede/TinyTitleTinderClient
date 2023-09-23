@@ -3,7 +3,7 @@ import SignIn from '../../components/ui/Signin'
 
 function Home() {
     return (
-        // Using MUI, create a title of our app that says "Tiny Title Tinder"
+        // TODO: Using MUI, create a title of our app that says "Tiny Title Tinder"
         <>
             <ButtonAppBar/>
             <SignIn/>
