@@ -18,7 +18,6 @@ const useFormValidation = () => {
    */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Validate email and password is not empty and has correct format
     if (emailError || passwordError || !email || !password) {
       setFormValid(false);
     } else {
@@ -32,9 +31,6 @@ const useFormValidation = () => {
     }, 6000);
   };
 
-  /**
-   * Closes snackbar
-   */
   const handleClose = (): void => {
     setOpen(false);
   };
@@ -49,7 +45,6 @@ const useFormValidation = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
-
 
   // TODO: Add more password validation
   /**

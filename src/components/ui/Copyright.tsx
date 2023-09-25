@@ -1,5 +1,4 @@
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import { Typography, Link } from "@mui/material";
 
 /**
  * Footer component that displays the current year and the name of the app
