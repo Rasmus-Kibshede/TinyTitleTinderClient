@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Typography, Link } from "@mui/material";
 
 /**
