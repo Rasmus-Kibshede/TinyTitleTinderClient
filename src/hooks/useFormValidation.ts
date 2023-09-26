@@ -23,9 +23,8 @@ const useFormValidation = () => {
     } else {
       setFormValid(true);
     }
-    // Open snackbar on submit
     setOpen(true);
-    // Close snackbar after 6 seconds
+
     setTimeout(() => {
       setOpen(false);
     }, 6000);
