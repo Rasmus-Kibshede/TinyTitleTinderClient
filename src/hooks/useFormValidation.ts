@@ -19,6 +19,11 @@ const useFormValidation = () => {
    */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (emailError || passwordError || !email || !password) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
     setOpen(true);
 
     setTimeout(() => {

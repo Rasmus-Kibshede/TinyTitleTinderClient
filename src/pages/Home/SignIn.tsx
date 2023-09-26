@@ -117,7 +117,6 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
-              <p>
                 {formValid ? (
                   <Snackbar open={open}>
                     <Alert
@@ -139,7 +138,6 @@ export default function SignIn() {
                     </Alert>
                   </Snackbar>
                 )}
-              </p>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
