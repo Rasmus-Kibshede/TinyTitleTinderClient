@@ -1,5 +1,5 @@
-import ButtonAppBar from '../../components/ui/Appbar'
-import SignIn from '../../components/ui/Signin'
+import ButtonAppBar from '../components/ui/Appbar'
+import SignIn from '../components/ui/Signin'
 
 function Home() {
     return (

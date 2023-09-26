@@ -5,8 +5,10 @@ import { useState } from "react";
  * @returns emailError, setEmailError, passwordError, setPasswordError, email, setEmail, password, setPassword, formValid, setFormValid, open, setOpen, handleClose, handleSubmit, validateEmail, validatePassword
  */
 const useFormValidation = () => {
+  const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formValid, setFormValid] = useState(false);
@@ -19,7 +21,7 @@ const useFormValidation = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Validate email and password is not empty and has correct format
-    if (emailError || passwordError || !email || !password) {
+    if (usernameError || emailError || passwordError || !username || !email || !password) {
       setFormValid(false);
     } else {
       setFormValid(true);
@@ -37,6 +39,10 @@ const useFormValidation = () => {
    */
   const handleClose = (): void => {
     setOpen(false);
+  };
+
+  const validateUsername = (username: string) => {
+    return username.length >= 8;
   };
 
   /**
@@ -62,10 +68,14 @@ const useFormValidation = () => {
   };
 
   return {
+    usernameError,
+    setUsernameError,
     emailError,
     setEmailError,
     passwordError,
     setPasswordError,
+    username,
+    setUsername,
     email,
     setEmail,
     password,
@@ -76,6 +86,7 @@ const useFormValidation = () => {
     setOpen,
     handleClose,
     handleSubmit,
+    validateUsername,
     validateEmail,
     validatePassword,
   };

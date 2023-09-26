@@ -1,16 +1,20 @@
-import { Avatar, Button, CssBaseline, TextField, Alert, FormControlLabel, Snackbar, Checkbox, Link, Grid, Box, Typography, Container, createTheme, ThemeProvider } from "@mui/material";
+import { Avatar, Button, CssBaseline, TextField, Box, Typography, Container, Alert, Snackbar, createTheme, ThemeProvider } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Copyright from "./Copyright";
-import useFormValidation from "../../hooks/useFormValidation/useFormValidation";
+import Copyright from "../components/ui/Copyright";
+import useFormValidation from "../hooks/useFormValidation/useFormValidation";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignUp() {
   const {
+    usernameError,
+    setUsernameError,
     emailError,
     setEmailError,
     passwordError,
     setPasswordError,
+    username,
+    setUsername,
     email,
     setEmail,
     password,
@@ -19,6 +23,7 @@ export default function SignIn() {
     open,
     handleClose,
     handleSubmit,
+    validateUsername,
     validateEmail,
     validatePassword,
   } = useFormValidation();
@@ -39,7 +44,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Box
             component="form"
@@ -47,6 +52,24 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
+            <TextField
+              margin="normal"
+              error={usernameError}
+              value={username}
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              onBlur={(e) => {
+                setUsernameError(!validateUsername(e.target.value));
+              }}
+            />
             <TextField
               margin="normal"
               error={emailError}
@@ -83,10 +106,6 @@ export default function SignIn() {
                 setPasswordError(!validatePassword(e.target.value));
               }}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -96,7 +115,7 @@ export default function SignIn() {
                 handleSubmit;
               }}
             >
-              Sign In
+              Sign up
             </Button>
             <p>
               {formValid ? (
@@ -106,7 +125,7 @@ export default function SignIn() {
                     severity="success"
                     sx={{ width: "100%" }}
                   >
-                    Login successful
+                    Sign up successful
                   </Alert>
                 </Snackbar>
               ) : (
@@ -121,18 +140,6 @@ export default function SignIn() {
                 </Snackbar>
               )}
             </p>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
