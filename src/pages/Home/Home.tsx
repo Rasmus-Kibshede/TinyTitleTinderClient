@@ -3,7 +3,7 @@
 
 function Home() {
     return (
-        // TODO: Using MUI, create a title of our app that says "Tiny Title Tinder"
+        // TODO: Add a front page
         <>
             
         </>

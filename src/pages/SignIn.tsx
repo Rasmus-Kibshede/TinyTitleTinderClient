@@ -1,5 +1,4 @@
 import Copyright from "../components/ui/Copyright";
-import useFormValidation from "../hooks/useFormValidation/useFormValidation";
 import {
   Alert,
   Avatar,
@@ -19,26 +18,36 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ButtonAppBar from "../components/ui/Appbar";
+import validator from "validator";
+import { useState } from "react";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const {
-    emailError,
-    setEmailError,
-    passwordError,
-    setPasswordError,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    formValid,
-    open,
-    handleClose,
-    handleSubmit,
-    validateEmail,
-    validatePassword,
-  } = useFormValidation();
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formValid, setFormValid] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (emailError || passwordError || !email || !password) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+    setOpen(true);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 6000);
+  };
+
+  const handleClose = (): void => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -81,7 +90,7 @@ export default function SignIn() {
                   setEmail(e.target.value);
                 }}
                 onBlur={(e) => {
-                  setEmailError(!validateEmail(e.target.value));
+                  setEmailError(!validator.isEmail(e.target.value));
                 }}
               />
               <TextField
@@ -99,7 +108,7 @@ export default function SignIn() {
                   setPassword(e.target.value);
                 }}
                 onBlur={(e) => {
-                  setPasswordError(!validatePassword(e.target.value));
+                  setPasswordError(!validator.isStrongPassword(e.target.value));
                 }}
               />
               <FormControlLabel
@@ -117,27 +126,27 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
-                {formValid ? (
-                  <Snackbar open={open}>
-                    <Alert
-                      onClose={handleClose}
-                      severity="success"
-                      sx={{ width: "100%" }}
-                    >
-                      Login successful
-                    </Alert>
-                  </Snackbar>
-                ) : (
-                  <Snackbar open={open}>
-                    <Alert
-                      onClose={handleClose}
-                      severity="error"
-                      sx={{ width: "100%" }}
-                    >
-                      Invalid login credentials
-                    </Alert>
-                  </Snackbar>
-                )}
+              {formValid ? (
+                <Snackbar open={open}>
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    Login successful
+                  </Alert>
+                </Snackbar>
+              ) : (
+                <Snackbar open={open}>
+                  <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    Invalid login credentials
+                  </Alert>
+                </Snackbar>
+              )}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">

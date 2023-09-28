@@ -1,12 +1,12 @@
-import Home from "./pages/Home"
+import SignIn from "./pages/SignIn"
 import SignUp from "./pages/Signup"
 
 function App() {
 
   return (
     <>
-      <Home />
       <SignUp />
+      <SignIn />
     </>
   )
 }
