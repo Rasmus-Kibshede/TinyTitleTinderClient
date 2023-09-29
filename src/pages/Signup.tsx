@@ -59,11 +59,11 @@ export default function SignUp() {
   };
 
   const validateFirstname = (firstname: string) => {
-    return firstname.length > 0;
+    return firstname.length > 0 && firstname.length < 255;
   };
 
   const validateLastname = (lastname: string) => {
-    return lastname.length > 0;
+    return lastname.length > 0 && lastname.length < 255;
   };
 
   const handleClose = (): void => {
@@ -207,7 +207,7 @@ export default function SignUp() {
                     severity="error"
                     sx={{ width: "100%" }}
                   >
-                    Invalid login credentials
+                    Something went wrong, please try again
                   </Alert>
                 </Snackbar>
               )}
