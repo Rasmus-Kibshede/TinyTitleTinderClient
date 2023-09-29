@@ -1,8 +1,12 @@
-const Home = () => {
+//import ButtonAppBar from '../components/ui/Appbar'
+//import SignUp from './Signup'
+
+function Home() {
     return (
-        <h1 className="text-3xl font-bold underline">
-            Hello world!
-        </h1>
+        // TODO: Add a front page
+        <>
+            
+        </>
     )
 }
 
