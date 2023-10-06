@@ -1,24 +1,9 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "../components/ui/Copyright";
 import validator from "validator";
 import { useState } from "react";
-import ButtonAppBar from "../components/ui/Appbar";
 
 const defaultTheme = createTheme();
 
@@ -72,7 +57,6 @@ export default function SignUp() {
 
   return (
     <>
-      <ButtonAppBar />
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />

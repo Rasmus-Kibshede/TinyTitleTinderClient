@@ -1,23 +1,7 @@
 import Copyright from "../components/ui/Copyright";
-import {
-  Alert,
-  Avatar,
-  Button,
-  Box,
-  CssBaseline,
-  Checkbox,
-  Container,
-  createTheme,
-  Grid,
-  TextField,
-  Typography,
-  ThemeProvider,
-  FormControlLabel,
-  Link,
-  Snackbar,
-} from "@mui/material";
+import { Alert, Avatar, Button, Box, CssBaseline, Checkbox, Container, createTheme, Grid, TextField, Typography, ThemeProvider, FormControlLabel, Link, Snackbar } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import ButtonAppBar from "../components/ui/Appbar";
+//import ButtonAppBar from "../components/ui/Appbar";
 import validator from "validator";
 import { useState } from "react";
 
@@ -51,7 +35,6 @@ export default function SignIn() {
 
   return (
     <>
-      <ButtonAppBar />
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
