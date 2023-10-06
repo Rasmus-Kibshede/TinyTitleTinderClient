@@ -5,7 +5,6 @@ function Home() {
     return (
         // TODO: Add a front page
         <>
-            
         </>
     )
 }
