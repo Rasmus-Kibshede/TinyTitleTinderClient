@@ -1,5 +1,5 @@
 import { SideDrawer } from "./Drawer";
-import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 /**
  * Top navbar component
