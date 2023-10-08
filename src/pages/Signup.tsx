@@ -1,9 +1,10 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "../components/ui/Copyright";
 import validator from "validator";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -197,9 +198,11 @@ export default function SignUp() {
               )}
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Typography variant="body2">
+                  <Link to="/signin">
                     Already have an account? Sign in
                   </Link>
+                  </Typography>
                 </Grid>
               </Grid>
             </Box>
