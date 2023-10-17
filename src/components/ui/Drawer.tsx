@@ -30,7 +30,7 @@ const menuItems = [
   {
     text: "Connected caregivers",
     icon: <LinkIcon color="primary" />,
-    path: "likedNames",
+    path: "connectedCaregivers",
   },
 ];
 
