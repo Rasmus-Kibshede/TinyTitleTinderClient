@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AccountBox } from "@mui/icons-material/";
 import GradeIcon from "@mui/icons-material/Grade";
+import LinkIcon from '@mui/icons-material/Link';
 
 //TODO: Add more menu items
 const menuItems = [
@@ -24,6 +25,11 @@ const menuItems = [
   {
     text: "Liked names",
     icon: <GradeIcon color="primary" />,
+    path: "likedNames",
+  },
+  {
+    text: "Connected caregivers",
+    icon: <LinkIcon color="primary" />,
     path: "likedNames",
   },
 ];
@@ -57,7 +63,6 @@ export const SideDrawer = () => {
                 </ListItemButton>
               </Link>
             ))}
-            ;
           </List>
         </Box>
       </Drawer>
