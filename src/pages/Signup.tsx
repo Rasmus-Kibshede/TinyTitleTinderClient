@@ -1,22 +1,30 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
+import { Link } from 'react-router-dom';
+import { Button, CssBaseline, TextField, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "../components/ui/Copyright";
-import validator from "validator";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+
 
 const defaultTheme = createTheme();
+
 
 export default function SignUp() {
   const [firstnameError, setFirstnameError] = useState(false);
   const [lastnameError, setLastnameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [countryError, setCountryError] = useState(false);
+  const [cityError, setCityError] = useState(false);
+  const [zipcodeError, setZipcodeError] = useState(false); 
+  const [addressError, setAddressError] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState(""); 
   const [formValid, setFormValid] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -28,10 +36,18 @@ export default function SignUp() {
       lastnameError ||
       emailError ||
       passwordError ||
+      countryError ||
+      cityError ||
+      zipcodeError ||
+      addressError ||
       !firstname ||
       !lastname ||
       !email ||
-      !password
+      !password ||
+      !country ||
+      !city ||
+      !zipcode ||
+      !address
     ) {
       setFormValid(false);
     } else {
@@ -45,11 +61,43 @@ export default function SignUp() {
   };
 
   const validateFirstname = (firstname: string) => {
-    return firstname.length > 0 && firstname.length < 255;
+    const regex = /^[a-zA-Z]+$/;
+    return firstname.length > 0 && firstname.length < 255 && regex.test(firstname);
   };
 
   const validateLastname = (lastname: string) => {
-    return lastname.length > 0 && lastname.length < 255;
+    const regex = /^[a-zA-Z]+$/;
+    return lastname.length > 0 && lastname.length < 255 && regex.test(lastname);
+  };
+
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9.@]+$/;
+    return email.length > 0 && email.length < 255 && regex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const regex = /^[0-9]+$/;
+    return password.length > 0 && password.length < 255 && regex.test(password);
+  };
+
+  const validateCountry = (country: string) => {
+    const regex = /^[a-zA-Z]+$/;
+    return country.length > 0 && country.length < 255 && regex.test(country);
+  };
+
+  const validateCity = (city: string) => {
+    const regex = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s.'-]+$/;
+    return city.length > 0 && city.length < 255 && regex.test(city);
+  };
+
+  const validateZipcode = (zipcode: string) => {
+    const regex = /^[0-9]+$/;
+    return zipcode.length > 0 && zipcode.length <= 10 && regex.test(zipcode);
+  };
+
+  const validateAddress = (address: string) => {
+    const regex = /^[a-zA-Z0-9\s.,-]+$/;
+    return address.length > 0 && address.length < 255 && regex.test(address);
   };
 
   const handleClose = (): void => {
@@ -58,29 +106,27 @@ export default function SignUp() {
 
   return (
     <>
+    
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 26,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: "center"
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
               sx={{ mt: 3 }}
             >
+              <Typography component="h1" variant="h5" marginBottom={'10px'}>
+                Sign up
+              </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -119,7 +165,7 @@ export default function SignUp() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     error={emailError}
                     value={email}
@@ -133,11 +179,11 @@ export default function SignUp() {
                       setEmail(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setEmailError(!validator.isEmail(e.target.value));
+                      setEmailError(!validateEmail(e.target.value));
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6} style={{ marginBottom: '40px', width: '600px' }}>
                   <TextField
                     error={passwordError}
                     value={password}
@@ -153,28 +199,119 @@ export default function SignUp() {
                     }}
                     onBlur={(e) => {
                       setPasswordError(
-                        !validator.isStrongPassword(e.target.value)
+                        !validatePassword(e.target.value)
                       );
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    error={countryError}
+                    value={country}
+                    required
+                    fullWidth
+                    name="country"
+                    id="country"
+                    label="Country"
+                    autoFocus
+                    onChange={(e) => {
+                      setCountry(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      setCountryError(!validateCountry(e.target.value));
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    error={cityError}
+                    value={city}
+                    required
+                    fullWidth
+                    name="city"
+                    id="city"
+                    label="City"
+                    autoFocus
+                    onChange={(e) => {
+                      setCity(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      setCityError(!validateCity(e.target.value));
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    error={zipcodeError}
+                    value={zipcode}
+                    required
+                    fullWidth
+                    name="zipcode"
+                    id="zipcode"
+                    label="Zipcode"
+                    autoFocus
+                    onChange={(e) => {
+                      setZipcode(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      setZipcodeError(!validateZipcode(e.target.value));
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    error={addressError}
+                    value={address}
+                    required
+                    fullWidth
+                    name="address"
+                    id="address"
+                    label="Address"
+                    autoFocus
+                    onChange={(e) => {
+                      setAddress(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      setAddressError(!validateAddress(e.target.value));
+                    }}
                   />
                 </Grid>
               </Grid>
+              <Grid item container xs={4} spacing={1}>
+              <Grid item xs={6}>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{
+                  mt: 1,
+                  backgroundColor: 'green',
+                  '&:hover': {
+                    backgroundColor: 'darkgreen', // Change the color on hover
+                  },
+              }}
               >
                 Sign Up
               </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Link to="/">
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  mt: 1,
+                  textDecoration: 'none', color: 'black',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'red', 
+                  },
+                }}
+              >
+                Cancel
+              </Button>
+              </Link>
+              </Grid>
+              </Grid>
               {formValid ? (
                 <Snackbar open={open}>
                   <Alert
@@ -196,18 +333,9 @@ export default function SignUp() {
                   </Alert>
                 </Snackbar>
               )}
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Typography variant="body2">
-                  <Link to="/signin">
-                    Already have an account? Sign in
-                  </Link>
-                  </Typography>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
+          <Copyright sx={{ mt: 1 }} />
         </Container>
       </ThemeProvider>
     </>
