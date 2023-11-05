@@ -284,9 +284,9 @@ export default function SignUp() {
                 variant="contained"
                 sx={{
                   mt: 1,
-                  backgroundColor: 'green',
+                  backgroundColor: '#27963C',
                   '&:hover': {
-                    backgroundColor: 'darkgreen', // Change the color on hover
+                    backgroundColor: 'green', // Change the color on hover
                   },
               }}
               >
