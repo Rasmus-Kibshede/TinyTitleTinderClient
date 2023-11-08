@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import MainMenuNavBar from "./MainMenuNavBar";
 
 
+import React from 'react'
+
 function Layout() {
     return (
         <div id="wrapper">
@@ -11,5 +13,5 @@ function Layout() {
     );
 }
 
-export default Layout;
+export default Layout
 
