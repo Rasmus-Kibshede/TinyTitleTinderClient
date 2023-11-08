@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { User } from '../types/userDatatype';
 
 interface Props {
-    user: boolean;
+    user: User | null;
     redirectPath: string;
 }
 

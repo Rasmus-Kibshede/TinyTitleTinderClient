@@ -1,6 +1,6 @@
 export interface User {
     email: string,
-    roles: Role[]
+    roles: Role[] | Role
 }
 
 
