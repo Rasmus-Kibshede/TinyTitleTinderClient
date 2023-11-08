@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "../components/ui/Layout";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/Signup";
+import Layout from "../ui/components/Layout";
+import About from "../ui/pages/About";
+import Contact from "../ui/pages/Contact";
+import SignIn from "../ui/pages/SignIn";
+import SignUp from "../ui/pages/Signup";
 import ProtectedRoute from "./ProtectedRoute";
-import Home from "../pages/Home";
-import Profile from "../pages/Profile";
+import Home from "../ui/pages/Home";
+import Profile from "../ui/pages/Profile";
 
 
 function AppRouter() {

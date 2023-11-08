@@ -1,4 +1,4 @@
-import Copyright from "../components/ui/Copyright";
+import Copyright from "../components/Copyright";
 import { Alert, Avatar, Button, Box, CssBaseline, Checkbox, Container, createTheme, Grid, TextField, Typography, ThemeProvider, FormControlLabel, Snackbar } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import validator from "validator";
