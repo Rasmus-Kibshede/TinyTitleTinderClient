@@ -78,9 +78,22 @@ export default function SignUp() {
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <Typography
+            sx={{
+              marginTop: "90px",
+              textAlign: "center",
+              color: "#27963C",
+              fontFamily: 'Josefin Sans, sans-serif',
+              fontWeight: "400",
+              fontSize: "48px",
+              letterSpacing: '0.4'
+            }}
+          >
+            TinyTitleTinder
+          </Typography>
           <Box
             sx={{
-              marginTop: 26,
+              marginTop: 5,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -107,6 +120,11 @@ export default function SignUp() {
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: firstnameError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setFirstname(e.target.value);
                     }}
@@ -134,6 +152,11 @@ export default function SignUp() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="family-name"
+                    sx={{
+                      '& fieldset': {
+                        borderColor: lastnameError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setLastname(e.target.value);
                     }}
@@ -165,6 +188,11 @@ export default function SignUp() {
                     label="Email address"
                     name="email"
                     autoComplete="email"
+                    sx={{
+                      '& fieldset': {
+                        borderColor: emailError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
@@ -189,6 +217,11 @@ export default function SignUp() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    sx={{
+                      '& fieldset': {
+                        borderColor: passwordError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
@@ -209,6 +242,11 @@ export default function SignUp() {
                     id="country"
                     label="Country"
                     autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: countryError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setCountry(e.target.value);
                     }}
@@ -236,6 +274,11 @@ export default function SignUp() {
                     id="city"
                     label="City"
                     autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: cityError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setCity(e.target.value);
                     }}
@@ -254,6 +297,11 @@ export default function SignUp() {
                     id="zipcode"
                     label="Zipcode"
                     autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: zipcodeError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setZipcode(e.target.value);
                     }}
@@ -274,6 +322,11 @@ export default function SignUp() {
                     id="address"
                     label="Address"
                     autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: addressError ? 'red' : 'green', // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}  
                     onChange={(e) => {
                       setAddress(e.target.value);
                     }}
