@@ -26,6 +26,7 @@ export default function MainMenuNavBar() {
             <Typography variant="h6">
               <Link style={{ marginRight: '10px' }} color="inherit" to="signup">Signup</Link>
               <Link style={{ marginRight: '10px' }} color="inherit" to="signin">Login</Link>
+              <Link style={{ marginRight: '10px' }} color="inherit" to="profile">Profile</Link>
             </Typography>  
         </Toolbar>
       </AppBar>
