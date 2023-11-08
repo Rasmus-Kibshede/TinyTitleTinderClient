@@ -1,12 +1,21 @@
-import { Link } from 'react-router-dom';
-import { Button, CssBaseline, TextField, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
+import { Link } from "react-router-dom";
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "../components/ui/Copyright";
+import validator from "validator";
 import { useState } from "react";
 
-
 const defaultTheme = createTheme();
-
 
 export default function SignUp() {
   const [firstnameError, setFirstnameError] = useState(false);
@@ -15,7 +24,7 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState(false);
   const [countryError, setCountryError] = useState(false);
   const [cityError, setCityError] = useState(false);
-  const [zipcodeError, setZipcodeError] = useState(false); 
+  const [zipcodeError, setZipcodeError] = useState(false);
   const [addressError, setAddressError] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -24,7 +33,7 @@ export default function SignUp() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
-  const [address, setAddress] = useState(""); 
+  const [address, setAddress] = useState("");
   const [formValid, setFormValid] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -60,53 +69,12 @@ export default function SignUp() {
     }, 6000);
   };
 
-  const validateFirstname = (firstname: string) => {
-    const regex = /^[a-zA-Z]+$/;
-    return firstname.length > 0 && firstname.length < 255 && regex.test(firstname);
-  };
-
-  const validateLastname = (lastname: string) => {
-    const regex = /^[a-zA-Z]+$/;
-    return lastname.length > 0 && lastname.length < 255 && regex.test(lastname);
-  };
-
-  const validateEmail = (email: string) => {
-    const regex = /^[a-zA-Z0-9.@]+$/;
-    return email.length > 0 && email.length < 255 && regex.test(email);
-  };
-
-  const validatePassword = (password: string) => {
-    const regex = /^[0-9]+$/;
-    return password.length > 0 && password.length < 255 && regex.test(password);
-  };
-
-  const validateCountry = (country: string) => {
-    const regex = /^[a-zA-Z]+$/;
-    return country.length > 0 && country.length < 255 && regex.test(country);
-  };
-
-  const validateCity = (city: string) => {
-    const regex = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s.'-]+$/;
-    return city.length > 0 && city.length < 255 && regex.test(city);
-  };
-
-  const validateZipcode = (zipcode: string) => {
-    const regex = /^[0-9]+$/;
-    return zipcode.length > 0 && zipcode.length <= 10 && regex.test(zipcode);
-  };
-
-  const validateAddress = (address: string) => {
-    const regex = /^[a-zA-Z0-9\s.,-]+$/;
-    return address.length > 0 && address.length < 255 && regex.test(address);
-  };
-
   const handleClose = (): void => {
     setOpen(false);
   };
 
   return (
     <>
-    
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -115,7 +83,7 @@ export default function SignUp() {
               marginTop: 26,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <Box
@@ -124,7 +92,7 @@ export default function SignUp() {
               onSubmit={handleSubmit}
               sx={{ mt: 3 }}
             >
-              <Typography component="h1" variant="h5" marginBottom={'10px'}>
+              <Typography component="h1" variant="h5" marginBottom={"10px"}>
                 Sign up
               </Typography>
               <Grid container spacing={2}>
@@ -143,7 +111,16 @@ export default function SignUp() {
                       setFirstname(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setFirstnameError(!validateFirstname(e.target.value));
+                      const firstNameInputValue = e.target.value;
+                      const isLengthValid = validator.isLength(
+                        firstNameInputValue,
+                        {
+                          min: 2,
+                          max: 40,
+                        }
+                      );
+                      const chars = validator.isAlpha(firstNameInputValue);
+                      setFirstnameError(!(isLengthValid && chars));
                     }}
                   />
                 </Grid>
@@ -161,7 +138,20 @@ export default function SignUp() {
                       setLastname(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setLastnameError(!validateLastname(e.target.value));
+                      const lastNameInputValue = e.target.value;
+                      const isLengthValid = validator.isLength(
+                        lastNameInputValue,
+                        {
+                          min: 2,
+                          max: 40,
+                        }
+                      );
+                      const chars = validator.isAlpha(lastNameInputValue);
+                      const specialCharacters =
+                        /^[!@#$%^&*()_+\-=,.<>?;:'"[\]{}/\\|~`-]+$/;
+                      setLastnameError(
+                        !((isLengthValid && chars) || specialCharacters)
+                      );
                     }}
                   />
                 </Grid>
@@ -179,11 +169,16 @@ export default function SignUp() {
                       setEmail(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setEmailError(!validateEmail(e.target.value));
+                      setEmailError(!validator.isEmail(e.target.value));
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} style={{ marginBottom: '40px', width: '600px' }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  style={{ marginBottom: "40px", width: "600px" }}
+                >
                   <TextField
                     error={passwordError}
                     value={password}
@@ -199,7 +194,7 @@ export default function SignUp() {
                     }}
                     onBlur={(e) => {
                       setPasswordError(
-                        !validatePassword(e.target.value)
+                        !validator.isStrongPassword(e.target.value)
                       );
                     }}
                   />
@@ -218,7 +213,16 @@ export default function SignUp() {
                       setCountry(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setCountryError(!validateCountry(e.target.value));
+                      const countryInputValue = e.target.value;
+                      const isLengthValid = validator.isLength(
+                        countryInputValue,
+                        {
+                          min: 1,
+                          max: 40,
+                        }
+                      );
+                      const chars = validator.isAlpha(countryInputValue);
+                      setCountryError(!(isLengthValid && chars));
                     }}
                   />
                 </Grid>
@@ -236,7 +240,7 @@ export default function SignUp() {
                       setCity(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setCityError(!validateCity(e.target.value));
+                      setCityError(!validator.isAlpha(e.target.value));
                     }}
                   />
                 </Grid>
@@ -254,7 +258,9 @@ export default function SignUp() {
                       setZipcode(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setZipcodeError(!validateZipcode(e.target.value));
+                      setZipcodeError(
+                        !validator.isPostalCode(e.target.value, "any")
+                      );
                     }}
                   />
                 </Grid>
@@ -272,45 +278,59 @@ export default function SignUp() {
                       setAddress(e.target.value);
                     }}
                     onBlur={(e) => {
-                      setAddressError(!validateAddress(e.target.value));
+                      const addressInputValue = e.target.value;
+                      const isLengthValid = validator.isLength(
+                        addressInputValue,
+                        {
+                          min: 1,
+                          max: 40,
+                        }
+                      );
+                      const chars = validator.isAlpha(addressInputValue);
+                      const specialCharactersRegex =
+                        /^[!@#$%^&*()_+\-=,.<>?;:'"[\]{}/\\|~`-]+$/;
+                      setAddressError(
+                        !((isLengthValid && chars) || specialCharactersRegex)
+                      );
                     }}
                   />
                 </Grid>
               </Grid>
               <Grid item container xs={4} spacing={1}>
-              <Grid item xs={6}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  mt: 1,
-                  backgroundColor: '#27963C',
-                  '&:hover': {
-                    backgroundColor: 'green', // Change the color on hover
-                  },
-              }}
-              >
-                Sign Up
-              </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Link to="/">
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  mt: 1,
-                  textDecoration: 'none', color: 'black',
-                  backgroundColor: 'transparent',
-                  '&:hover': {
-                    backgroundColor: 'red', 
-                  },
-                }}
-              >
-                Cancel
-              </Button>
-              </Link>
-              </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      mt: 1,
+                      backgroundColor: "#27963C",
+                      "&:hover": {
+                        backgroundColor: "green",
+                      },
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Link to="/">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        mt: 1,
+                        textDecoration: "none",
+                        color: "black",
+                        backgroundColor: "transparent",
+                        "&:hover": {
+                          backgroundColor: "red",
+                        },
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Link>
+                </Grid>
               </Grid>
               {formValid ? (
                 <Snackbar open={open}>
