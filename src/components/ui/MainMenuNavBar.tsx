@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 /**
  * Top navbar component
  */
-export default function ButtonAppBar() {
+export default function MainMenuNavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
