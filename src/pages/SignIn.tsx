@@ -28,20 +28,31 @@ export default function SignIn() {
   const [formValid, setFormValid] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    
     if (emailError || passwordError || !email || !password) {
       setFormValid(false);
+      return;
+  }
+  try{
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    console.log(response)
+    if(response.ok) {
+      const data = await response.json();
+      console.log(data) 
     } else {
-      setFormValid(true);
+      setOpen(true);
     }
-    setOpen(true);
-
-    setTimeout(() => {
-      setOpen(false);
-    }, 6000);
-  };
-
+  } catch(error) {
+    console.log('Error during signin', error); 
+  }
+}
   const handleClose = (): void => {
     setOpen(false);
   };
@@ -56,17 +67,17 @@ export default function SignIn() {
               marginTop: "90px",
               textAlign: "center",
               color: "#27963C",
-              fontFamily: 'cursive',
+              fontFamily: "Josefin Sans, sans-serif",
               fontWeight: "400",
               fontSize: "48px",
-              letterSpacing: '0.4'
+              letterSpacing: "0.4",
             }}
           >
             TinyTitleTinder
           </Typography>
           <Box
             sx={{
-              marginTop: 10,
+              marginTop: 5,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -78,7 +89,7 @@ export default function SignIn() {
               noValidate
               sx={{ mt: 1 }}
             >
-              <Typography variant="h5" marginBottom={"10px"}>
+              <Typography component="h1" variant="h5" marginBottom={"10px"}>
                 Sign in
               </Typography>
               <Typography style={{ fontSize: "13px" }}>
@@ -97,6 +108,11 @@ export default function SignIn() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    sx={{
+                      "& fieldset": {
+                        borderColor: emailError ? "red" : "green", // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
@@ -115,6 +131,11 @@ export default function SignIn() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    sx={{
+                      "& fieldset": {
+                        borderColor: passwordError ? "red" : "green", // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                      },
+                    }}
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
@@ -141,13 +162,17 @@ export default function SignIn() {
                       },
                     }}
                     onClick={() => {
-                      handleSubmit;
+                      handleSubmit();
                     }}
                   >
                     Sign In
                   </Button>
                   {formValid ? (
-                    <Snackbar open={open}>
+                    <Snackbar
+                      open={open}
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      autoHideDuration={3000}
+                    >
                       <Alert
                         onClose={handleClose}
                         severity="success"
@@ -157,13 +182,18 @@ export default function SignIn() {
                       </Alert>
                     </Snackbar>
                   ) : (
-                    <Snackbar open={open}>
+                    <Snackbar
+                      open={open}
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      autoHideDuration={3000}
+                    >
                       <Alert
                         onClose={handleClose}
                         severity="error"
                         sx={{ width: "100%" }}
                       >
-                        Invalid login credentials
+                        {emailError && "Invalid email address. "}
+                        {passwordError && "Invalid password."}
                       </Alert>
                     </Snackbar>
                   )}
@@ -187,5 +217,4 @@ export default function SignIn() {
         </Container>
       </ThemeProvider>
     </>
-  );
-}
+  )}
