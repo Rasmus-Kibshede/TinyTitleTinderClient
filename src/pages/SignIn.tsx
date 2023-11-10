@@ -29,13 +29,15 @@ export default function SignIn() {
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
-    
+    console.log('intry')
     if (emailError || passwordError || !email || !password) {
       setFormValid(false);
+      setOpen(true);
       return;
   }
   try{
-    const response = await fetch('/login', {
+    console.log('intry')
+    const response = await fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +47,8 @@ export default function SignIn() {
     console.log(response)
     if(response.ok) {
       const data = await response.json();
+      setFormValid(true)
+      setOpen(true)
       console.log(data) 
     } else {
       setOpen(true);
@@ -56,6 +60,7 @@ export default function SignIn() {
   const handleClose = (): void => {
     setOpen(false);
   };
+  
 
   return (
     <>
@@ -110,7 +115,7 @@ export default function SignIn() {
                     autoFocus
                     sx={{
                       "& fieldset": {
-                        borderColor: emailError ? "red" : "green", // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                        borderColor: emailError ? "red" : "green", 
                       },
                     }}
                     onChange={(e) => {
@@ -133,7 +138,7 @@ export default function SignIn() {
                     autoComplete="current-password"
                     sx={{
                       "& fieldset": {
-                        borderColor: passwordError ? "red" : "green", // Grøn border color, hvis feltet opfylder kravene, ellers rød
+                        borderColor: passwordError ? "red" : "green", 
                       },
                     }}
                     onChange={(e) => {
@@ -162,7 +167,7 @@ export default function SignIn() {
                       },
                     }}
                     onClick={() => {
-                      handleSubmit();
+                      handleSubmit;
                     }}
                   >
                     Sign In
