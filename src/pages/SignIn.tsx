@@ -1,4 +1,4 @@
-import Copyright from "../components/ui/Copyright";
+import Copyright from '../components/ui/Copyright';
 import {
   Alert,
   Button,
@@ -13,10 +13,10 @@ import {
   ThemeProvider,
   FormControlLabel,
   Snackbar,
-} from "@mui/material";
-import validator from "validator";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import validator from 'validator';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
