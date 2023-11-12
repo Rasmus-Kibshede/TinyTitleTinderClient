@@ -1,18 +1,38 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { User } from '../types/userDatatype';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { checkauthPath } from '../paths/urls';
 
 interface Props {
-    user: User | null;
-    redirectPath: string;
+  redirectPath: string;
 }
 
-function ProtectedRoute({ user, redirectPath }: Props) {
+function ProtectedRoute({ redirectPath }: Props) {
+  const [userAuth, setUserAuth] = useState(Boolean);
 
-    if (!user) {
-        return <Navigate to={redirectPath} replace />;
-    } else {
-        return <Outlet />;
-    }
+  useEffect(() => {
+    const authCheck = async () => {
+      try {
+        const { data } = await axios.get(checkauthPath);
+        console.log(data);
+        setUserAuth(data.success);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response?.data);
+        } else {
+          console.log(error);
+        }
+      }
+    };
+
+    authCheck();
+  }, []);
+
+  if (userAuth) {
+    return <Navigate to={redirectPath} replace />;
+  } else {
+    return <Outlet />;
+  }
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;
