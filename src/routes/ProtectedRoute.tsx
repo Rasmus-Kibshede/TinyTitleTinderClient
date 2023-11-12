@@ -14,9 +14,9 @@ function ProtectedRoute({ redirectPath }: Props) {
     const authCheck = async () => {
       try {
         const { data } = await axios.get(checkauthPath);
-        console.log(data);
         setUserAuth(data.success);
       } catch (error) {
+        //Snackbar here when it is on global reach
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data);
         } else {
