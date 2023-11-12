@@ -8,7 +8,7 @@ interface Props {
 }
 
 function ProtectedRoute({ redirectPath }: Props) {
-  const [userAuth, setUserAuth] = useState(Boolean);
+  const [userAuth, setUserAuth] = useState<boolean>(false);
 
   useEffect(() => {
     const authCheck = async () => {
@@ -29,9 +29,9 @@ function ProtectedRoute({ redirectPath }: Props) {
   }, []);
 
   if (userAuth) {
-    return <Navigate to={redirectPath} replace />;
-  } else {
     return <Outlet />;
+  } else {
+    return <Navigate to={redirectPath} replace />;
   }
 }
 
