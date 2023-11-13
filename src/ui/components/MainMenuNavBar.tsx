@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 /**
  * Top navbar component
  */
-export default function ButtonAppBar() {
+export default function MainMenuNavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -26,6 +26,7 @@ export default function ButtonAppBar() {
             <Typography variant="h6">
               <Link style={{ marginRight: '10px' }} color="inherit" to="signup">Signup</Link>
               <Link style={{ marginRight: '10px' }} color="inherit" to="signin">Login</Link>
+              <Link style={{ marginRight: '10px' }} color="inherit" to="profile">Profile</Link>
             </Typography>  
         </Toolbar>
       </AppBar>
