@@ -31,6 +31,7 @@ const Swipe = () => {
         }
     })
 
+    //TODO: Get rid of inline styling
     return (
         <>
             <ThemeProvider theme={THEME}>
@@ -84,15 +85,29 @@ const Swipe = () => {
                         </Box>
                     </Box>
 
-                    <Button variant="contained" sx={{ backgroundColor: 'white', color: 'black', width: '300px', border: '#000000', mt: 6 }}>
+                    <Button variant="contained" sx={{
+                        backgroundColor: 'white', color: 'black', width: '300px', mt: 6, boxShadow: '0px 3px 6px rgba(0, 3, 1, 0.50)', '&:hover': {
+                            backgroundColor: '#f2f2f2',
+                        },
+                    }}>
                         READ MORE
                     </Button>
 
                     <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
-                        <Button onClick={() => handleThumbClick('down')} sx={{ color: 'red' }}>
+                        <Button onClick={() => handleThumbClick('down')} sx={{
+                            color: 'red', '&:hover': {
+                                backgroundColor: '#FFCA80',
+                            },
+                            borderRadius: '50%'
+                        }}>
                             <ThumbDownIcon sx={{ fontSize: '100px' }} />
                         </Button>
-                        <Button onClick={() => handleThumbClick('up')} sx={{ color: 'green' }}>
+                        <Button onClick={() => handleThumbClick('up')} sx={{
+                            color: 'green', '&:hover': {
+                                backgroundColor: '#FFCA80',
+                            },
+                            borderRadius: '50%'
+                        }}>
                             <ThumbUpIcon sx={{ fontSize: '100px' }} />
                         </Button>
                     </Box>
