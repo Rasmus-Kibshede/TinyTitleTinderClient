@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, ThemeProvider, Typography, createTheme } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import axios from 'axios';
+import { getName } from '../../paths/urls';
 
 const Swipe = () => {
+    const [name, setName] = useState('');
+    const [meanings, setMeanings] = useState<any[]>([])
+    const [origins, setOrigins] = useState<any[]>([])
+    const [gender, setGender] = useState('');
+
+    useEffect(() => {
+        const fetchName = async () => {
+            try {
+                const response = await axios.get(getName);
+                setName(response.data.data.nameSuggestName);
+                setMeanings(response.data.data.meanings);
+                setOrigins(response.data.data.origins);
+                setGender(response.data.data.gender);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchName();
+    }, []);
+
+    // TODO: Implement some kinda thing that handles liked and disliked names
     const handleThumbClick = (type: any) => {
         console.log(`Thumb ${type} clicked`);
     };
@@ -30,8 +53,6 @@ const Swipe = () => {
             },
         }
     })
-
-    //TODO: Get rid of inline styling
     return (
         <>
             <ThemeProvider theme={THEME}>
@@ -45,42 +66,56 @@ const Swipe = () => {
                         textAlign: 'center',
                         padding: 4,
                         border: '3px solid #CBCBCB',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        // display: 'flex',
+                        // flexDirection: 'column',
+                        // alignItems: 'center',
                         marginTop: '5%'
                     }}
                 >
                     <Typography variant="h4">
-                        Name
+                        {name}
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                         <Box sx={{ width: '45%' }}>
-                            <Typography variant="body1">
-                                Meaning
-                                <Typography variant='body2'>
-                                    Some meaning text
+                            {meanings.length > 0 && (
+                                <Typography variant="body1">
+                                    Meaning
+                                    <Typography variant="body2">
+                                        {meanings[0].definition.length > 20
+                                            ? `${meanings[0].definition.substring(0, 20)}...`
+                                            : meanings[0].definition}
+                                    </Typography>
                                 </Typography>
-                            </Typography>
-                            <Typography variant="body1">
-                                Description
-                                <Typography variant='body2'>
-                                    Some description text
+                            )}
+                            {origins.length > 0 && (
+                                <Typography variant="body1">
+                                    Description
+                                    <Typography variant="body2">
+                                        {origins[0].description.length > 20
+                                            ? `${origins[0].description.substring(0, 20)}...`
+                                            : origins[0].description}
+                                    </Typography>
                                 </Typography>
-                            </Typography>
+                            )}
                         </Box>
                         <Box sx={{ width: '45%' }}>
                             <Typography variant="body1">
                                 Gender
                                 <Typography variant='body2'>
-                                    Some gender text
+                                    {gender}
                                 </Typography>
                             </Typography>
                             <Typography variant="body1">
-                                Religion
-                                <Typography variant='body2'>
-                                    Some religion text
-                                </Typography>
+                                {origins.length > 0 && (
+                                    <Typography variant="body1">
+                                        Religion
+                                        <Typography variant="body2">
+                                            {origins[0].religion.length > 20
+                                                ? `${origins[0].religion.substring(0, 20)}...`
+                                                : origins[0].religion}
+                                        </Typography>
+                                    </Typography>
+                                )}
                             </Typography>
                         </Box>
                     </Box>
