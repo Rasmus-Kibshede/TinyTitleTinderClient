@@ -47,6 +47,7 @@ const Swipe = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        marginTop: '5%'
                     }}
                 >
                     <Typography variant="h4">
@@ -56,13 +57,13 @@ const Swipe = () => {
                         <Box sx={{ width: '45%' }}>
                             <Typography variant="body1">
                                 Meaning
-                                <Typography variant='body2' gutterBottom>
+                                <Typography variant='body2'>
                                     Some meaning text
                                 </Typography>
                             </Typography>
                             <Typography variant="body1">
                                 Description
-                                <Typography variant='body2' gutterBottom>
+                                <Typography variant='body2'>
                                     Some description text
                                 </Typography>
                             </Typography>
@@ -70,13 +71,13 @@ const Swipe = () => {
                         <Box sx={{ width: '45%' }}>
                             <Typography variant="body1">
                                 Gender
-                                <Typography variant='body2' gutterBottom>
+                                <Typography variant='body2'>
                                     Some gender text
                                 </Typography>
                             </Typography>
                             <Typography variant="body1">
                                 Religion
-                                <Typography variant='body2' gutterBottom>
+                                <Typography variant='body2'>
                                     Some religion text
                                 </Typography>
                             </Typography>
