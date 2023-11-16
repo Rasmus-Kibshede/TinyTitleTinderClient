@@ -21,7 +21,7 @@ const Swipe = () => {
                 definition: 'Definition of the meaning to the meaning of the definition'
             }
         ],
-        gender: "whateves"
+        gender: "male"
     }]);
 
     useEffect(() => {
@@ -47,13 +47,10 @@ const Swipe = () => {
                 return '#FFDBDB';
             case 'male':
                 return '#B6EEFF';
-            case 'unisex':
-                return '#FFCA80';
             default:
                 return '#FFCA80';
         }
     };
-
 
     return (
         <>
@@ -76,7 +73,7 @@ const Swipe = () => {
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
                     <Button onClick={() => handleThumbClick('down')} sx={{
                         color: 'red', '&:hover': {
-                            backgroundColor: '#FFCA80',
+                            backgroundColor: 'transparent',
                         },
                         borderRadius: '50%'
                     }}>
@@ -84,7 +81,7 @@ const Swipe = () => {
                     </Button>
                     <Button onClick={() => handleThumbClick('up')} sx={{
                         color: 'green', '&:hover': {
-                            backgroundColor: '#FFCA80',
+                            backgroundColor: 'transparent',
                         },
                         borderRadius: '50%'
                     }}>
