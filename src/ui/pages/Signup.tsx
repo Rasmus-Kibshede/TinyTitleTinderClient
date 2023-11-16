@@ -1,7 +1,7 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Copyright from "../components/ui/Copyright";
+import Copyright from "../components/Copyright";
 import validator from "validator";
 import { useState } from "react";
 import { Link } from "react-router-dom";

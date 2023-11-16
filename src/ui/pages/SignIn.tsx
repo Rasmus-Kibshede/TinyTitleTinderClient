@@ -10,10 +10,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from 'axios';
+import { useAuthUserStore } from '../../store/user';
+import Cookie from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignIn() {
+  const user = useAuthUserStore();
+  const navigate = useNavigate();
+  // const setAuthUser = useAuthUserStore((state) => state.setAuthUser);
 
   const handleSubmit = async (event: {
     preventDefault: () => void;
@@ -27,7 +33,11 @@ export default function SignIn() {
       password: data.get('password'),
     });
 
-    console.log(response.data);
+    user.setAuthUser(response.data.data.user);
+    user.setToken(response.data.data.token);
+    Cookie.set('jwt', response.data.data.token);
+
+    navigate('/profile');
   };
 
   return (
