@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, ThemeProvider, createTheme } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import axios from 'axios';
-import { getName } from '../../paths/urls';
 import { Name } from '../../types/name';
 import { NameSuggest } from '../components/NameSuggest';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([{
+        //TODO: Delete this and implement the real thing when backend is ready
         name: 'John',
         origins: [
             {
@@ -19,10 +18,10 @@ const Swipe = () => {
         ],
         meanings: [
             {
-                definition: 'God is gracious'
+                definition: 'Definition of the meaning to the meaning of the definition'
             }
         ],
-        gender: "Male"
+        gender: "whateves"
     }]);
 
     useEffect(() => {
@@ -42,70 +41,57 @@ const Swipe = () => {
         console.log(`Thumb ${type} clicked`);
     };
 
-    const THEME = createTheme({
-        typography: {
-            body1: {
-                'fontFamily': `"Josefin sans", sans-serif`,
-                'fontSize': '20px',
-                'fontWeight': '500',
-                'marginBottom': '25px'
-            },
-            body2: {
-                'fontFamily': `"Josefin sans", sans-serif`,
-                'fontSize': '32px',
-                'fontWeight': '400',
-                'color': '#FFFFFF',
-                'marginBottom': '25px'
-            },
-            h4: {
-                'fontFamily': `"Advent Pro", sans-serif`,
-                'fontSize': '60px',
-                'marginBottom': '25px'
-            },
+    const getBoxColor = (gender: string) => {
+        switch (gender.toLowerCase()) {
+            case 'female':
+                return '#FFDBDB';
+            case 'male':
+                return '#B6EEFF';
+            case 'unisex':
+                return '#FFCA80';
+            default:
+                return '#FFCA80';
         }
-    })
+    };
+
+
     return (
         <>
-            <ThemeProvider theme={THEME}>
-                <Box
-                    sx={{
-                        height: '551px',
-                        width: '900px',
-                        borderRadius: '56px',
-                        bgcolor: '#FFCA80',
-                        margin: 'auto',
-                        textAlign: 'center',
-                        padding: 4,
-                        border: '3px solid #CBCBCB',
-                        // display: 'flex',
-                        // flexDirection: 'column',
-                        // alignItems: 'center',
-                        marginTop: '5%'
-                    }}
-                >
+            <Box
+                sx={{
+                    height: '551px',
+                    width: '900px',
+                    borderRadius: '56px',
+                    bgcolor: getBoxColor(names[0]?.gender || 'unisex'),
+                    margin: 'auto',
+                    textAlign: 'center',
+                    padding: 4,
+                    border: '3px solid #CBCBCB',
+                    marginTop: '5%'
+                }}
+            >
 
-                    <NameSuggest name={names[0]}/>
+                <NameSuggest name={names[0]} />
 
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
-                        <Button onClick={() => handleThumbClick('down')} sx={{
-                            color: 'red', '&:hover': {
-                                backgroundColor: '#FFCA80',
-                            },
-                            borderRadius: '50%'
-                        }}>
-                            <ThumbDownIcon sx={{ fontSize: '100px' }} />
-                        </Button>
-                        <Button onClick={() => handleThumbClick('up')} sx={{
-                            color: 'green', '&:hover': {
-                                backgroundColor: '#FFCA80',
-                            },
-                            borderRadius: '50%'
-                        }}>
-                            <ThumbUpIcon sx={{ fontSize: '100px' }} />
-                        </Button>
-                    </Box>
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
+                    <Button onClick={() => handleThumbClick('down')} sx={{
+                        color: 'red', '&:hover': {
+                            backgroundColor: '#FFCA80',
+                        },
+                        borderRadius: '50%'
+                    }}>
+                        <ThumbDownIcon sx={{ fontSize: '100px' }} />
+                    </Button>
+                    <Button onClick={() => handleThumbClick('up')} sx={{
+                        color: 'green', '&:hover': {
+                            backgroundColor: '#FFCA80',
+                        },
+                        borderRadius: '50%'
+                    }}>
+                        <ThumbUpIcon sx={{ fontSize: '100px' }} />
+                    </Button>
                 </Box>
-            </ThemeProvider>
+            </Box>
         </>
     );
 };
