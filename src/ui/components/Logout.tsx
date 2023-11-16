@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuthUserStore } from '../../store/user';
 import { logout } from '../../paths/urls';
 import axios from 'axios';
