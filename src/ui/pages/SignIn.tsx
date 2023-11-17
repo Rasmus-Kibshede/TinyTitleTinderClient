@@ -1,6 +1,5 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {
-  Link,
   Grid,
   Box,
   Checkbox,
@@ -13,9 +12,11 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthUserStore } from '../../store/user';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
+import { useState } from 'react';
+import validator from 'validator';
 
 export default function SignIn() {
   const user = useAuthUserStore();
@@ -29,20 +30,30 @@ export default function SignIn() {
   }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const response = await axios.post('http://localhost:3000/login', {
       email: data.get('email'),
       password: data.get('password'),
     });
 
-    user.setAuthUser(response.data.data.user);
-    user.setToken(response.data.data.token);
-    Cookie.set('jwt', response.data.data.token);
+    console.log(response);
 
-    snackbarStore.setSnackbar(true, 'test 123445', 'success');
+    if (response.data.success) {
+      user.setAuthUser(response.data.data.user);
+      user.setToken(response.data.data.token);
+      Cookie.set('jwt', response.data.data.token);
 
-    navigate('/profile');
+      snackbarStore.setSnackbar(true, 'You are logged in', 'success');
+
+      navigate('/profile');
+    } else {
+      console.log('Invalid email or password');
+
+      snackbarStore.setSnackbar(true, 'Invalid email or password', 'error');
+    }
   };
+
+  const [email, setEmail] = useState<string>('');
+  // const [password, setPassword] = useState<string>('');
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,6 +74,9 @@ export default function SignIn() {
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
+            error={!validator.isEmail(email)}
+            helperText={'Invalid email'}
+            onChange={(e) => setEmail(e.target.value)}
             required
             fullWidth
             id="email"
@@ -95,14 +109,10 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+              <Link to={'/*'}>{'Forgot you password?'}</Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to={'/signup'}>{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </Box>
