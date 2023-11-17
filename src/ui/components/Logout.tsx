@@ -4,10 +4,12 @@ import { logout } from '../../paths/urls';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 
 function Logout() {
   const user = useAuthUserStore();
   const navigate = useNavigate();
+  const snackbarStore = useSnackbarDisplay();
 
   useEffect(() => {}, []);
 
@@ -27,6 +29,7 @@ function Logout() {
       }
     }
 
+    snackbarStore.setSnackbar(true, 'You are logged out', 'success');
     navigate('/signin');
   };
 
