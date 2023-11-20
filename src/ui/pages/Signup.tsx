@@ -48,7 +48,7 @@ export default function SignUp() {
         (c) => c.country === selectedCountryName
       );
 
-      if (getCountryObejct === undefined) {
+      if (!getCountryObejct) {
         console.log('no country found');
       } else {
         console.log(getCountryObejct);
