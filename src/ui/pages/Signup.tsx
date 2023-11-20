@@ -42,7 +42,6 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    countries.find((c) => console.log(c.country));
 
     try {
       const getCountryObejct = countries.find(
