@@ -34,7 +34,6 @@ function ProtectedRoute({ redirectPath }: Props) {
 
     if (user.authUser) {
       authCheck();
-      console.log(userAuth);
     } else {
       // mesasage here
     }

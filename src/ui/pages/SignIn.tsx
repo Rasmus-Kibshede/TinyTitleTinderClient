@@ -54,8 +54,6 @@ export default function SignIn() {
 
       navigate('/profile');
     } else {
-      console.log('Invalid email or password');
-
       snackbarStore.setSnackbar(true, 'Invalid email or password', 'error');
     }
   };
