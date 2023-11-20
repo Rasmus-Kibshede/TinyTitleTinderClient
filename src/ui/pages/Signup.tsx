@@ -51,8 +51,6 @@ export default function SignUp() {
       if (!getCountryObejct) {
         console.log('no country found');
       } else {
-        console.log(getCountryObejct);
-        console.log(getCountryObejct.locationId);
 
         const user = {
           email: email,
