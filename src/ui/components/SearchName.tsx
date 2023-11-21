@@ -8,6 +8,7 @@ import { Name } from '../../types/name';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
 
+// TODO: Add route to given name, when the expanded name section is ready
 export default function ComboBox() {
     const [names, setNames] = useState<Name[]>([]);
 
@@ -25,13 +26,12 @@ export default function ComboBox() {
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1%', flexGrow: 10 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <SearchIcon sx={{ color: '#000000', marginBottom: '1%' }} />
                 <Autocomplete
                     disablePortal
-                    id="standard-basic"
                     options={names.map((option) => option.nameSuggestName)}
-                    sx={{ width: 300, backgroundColor: 'transparent', }}
+                    sx={{ width: 220, backgroundColor: 'transparent', }}
                     renderInput={(params) => <TextField {...params} label="Search name" variant='standard' sx={{ color: '#000000' }} />}
                 />
             </Box>
