@@ -9,11 +9,11 @@ import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
 
 interface StyledBoxProps {
-    getBoxColor: string;
+    getboxcolor: string;
 }
 
 interface StyledButtonProps {
-    buttonAction: string;
+    buttonaction: string;
 }
 
 const StyledBox = styled(Box) <StyledBoxProps>`
@@ -25,7 +25,7 @@ const StyledBox = styled(Box) <StyledBoxProps>`
     padding: 4;
     border: 3px solid #CBCBCB;
     margin-top: 5%;
-    background-color: ${({ getBoxColor }) => {
+    background-color: ${({ getboxcolor: getBoxColor }) => {
         switch (getBoxColor.toLowerCase()) {
             case 'female':
                 return '#FFDBDB';
@@ -47,7 +47,7 @@ const StyledButtonBox = styled(Box)`
     `
 
 const StyledButton = styled(Button) <StyledButtonProps>`
-    color: ${({ buttonAction: test }) => test === 'up' ? 'green' : 'red'};
+    color: ${({ buttonaction: test }) => test === 'up' ? 'green' : 'red'};
     &:hover {
         background-color: transparent;
     };
@@ -84,18 +84,18 @@ const Swipe = () => {
         names.length > 0 && (
             <>
                 <StyledBox
-                    getBoxColor={names[currentIndex]?.gender || 'unisex'}
+                    getboxcolor={names[currentIndex]?.gender || 'unisex'}
                 >
                     <NameSuggest name={names[currentIndex]} />
 
                     <StyledButtonBox>
                         <StyledButton onClick={() => handleThumbClick('down')}
-                            buttonAction={'down'}
+                            buttonaction={'down'}
                         >
                             <ThumbDownIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
                         <StyledButton onClick={() => handleThumbClick('up')}
-                            buttonAction={'up'}
+                            buttonaction={'up'}
                         >
                             <ThumbUpIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
