@@ -9,11 +9,11 @@ import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
 
 interface StyledBoxProps {
-    getboxcolor: string;
+    gender: string;
 }
 
 interface StyledButtonProps {
-    buttonaction: string;
+    buttonAction: string;
 }
 
 const StyledBox = styled(Box) <StyledBoxProps>`
@@ -25,8 +25,8 @@ const StyledBox = styled(Box) <StyledBoxProps>`
     padding: 4;
     border: 3px solid #CBCBCB;
     margin-top: 5%;
-    background-color: ${({ getboxcolor: getBoxColor }) => {
-        switch (getBoxColor.toLowerCase()) {
+    background-color: ${({ gender }) => {
+        switch (gender.toLowerCase()) {
             case 'female':
                 return '#FFDBDB';
             case 'male':
@@ -47,7 +47,7 @@ const StyledButtonBox = styled(Box)`
     `
 
 const StyledButton = styled(Button) <StyledButtonProps>`
-    color: ${({ buttonaction: test }) => test === 'up' ? 'green' : 'red'};
+    color: ${({ buttonAction }) => buttonAction === 'up' ? 'green' : 'red'};
     &:hover {
         background-color: transparent;
     };
@@ -84,18 +84,18 @@ const Swipe = () => {
         names.length > 0 && (
             <>
                 <StyledBox
-                    getboxcolor={names[currentIndex]?.gender || 'unisex'}
+                    gender={names[currentIndex]?.gender || 'unisex'}
                 >
                     <NameSuggest name={names[currentIndex]} />
 
                     <StyledButtonBox>
                         <StyledButton onClick={() => handleThumbClick('down')}
-                            buttonaction={'down'}
+                            buttonAction={'down'}
                         >
                             <ThumbDownIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
                         <StyledButton onClick={() => handleThumbClick('up')}
-                            buttonaction={'up'}
+                            buttonAction={'up'}
                         >
                             <ThumbUpIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
