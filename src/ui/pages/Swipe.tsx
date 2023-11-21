@@ -4,31 +4,18 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { Name } from '../../types/name';
 import { NameSuggest } from '../components/NameSuggest';
+import axios from 'axios';
+import { getName } from '../../paths/urls';
 
 const Swipe = () => {
-    const [names, setNames] = useState<Name[]>([{
-        //TODO: Delete this and implement the real thing when backend is ready
-        name: 'John',
-        origins: [
-            {
-                region: 'English',
-                religion: 'Christianity',
-                description: 'God is gracious'
-            }
-        ],
-        meanings: [
-            {
-                definition: 'Definition of the meaning to the meaning of the definition'
-            }
-        ],
-        gender: "male"
-    }]);
+    const [names, setNames] = useState<Name[]>([]);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     useEffect(() => {
         const fetchName = async () => {
             try {
-                // const response = await axios.get(getName);
-                // setNames(response.data.names);
+                const response = await axios.get(getName);
+                setNames(response.data.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -36,9 +23,14 @@ const Swipe = () => {
         fetchName();
     }, []);
 
-    // TODO: Implement some kinda thing that handles liked and disliked names
-    const handleThumbClick = (type: any) => {
+    const handleThumbClick = (type: string) => {
+        const newRandomIndex = Math.floor(Math.random() * names.length);
+
+        setCurrentIndex(newRandomIndex);
+
         console.log(`Thumb ${type} clicked`);
+
+        // TODO: Remove a liked / disliked name from the list and show a new one
     };
 
     const getBoxColor = (gender: string) => {
@@ -59,7 +51,7 @@ const Swipe = () => {
                     height: '551px',
                     width: '900px',
                     borderRadius: '56px',
-                    bgcolor: getBoxColor(names[0]?.gender || 'unisex'),
+                    bgcolor: getBoxColor(names[currentIndex]?.gender || 'unisex'),
                     margin: 'auto',
                     textAlign: 'center',
                     padding: 4,
@@ -67,8 +59,7 @@ const Swipe = () => {
                     marginTop: '5%'
                 }}
             >
-
-                <NameSuggest name={names[0]} />
+                {names.length > 0 && <NameSuggest name={names[currentIndex]} />}
 
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
                     <Button onClick={() => handleThumbClick('down')} sx={{

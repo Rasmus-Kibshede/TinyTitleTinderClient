@@ -3,7 +3,7 @@ import { Origin } from "./origin";
 
 export interface Name {
     id?: number,
-    name: string,
+    nameSuggestName: string,
     origins: Origin[],
     meanings: Meaning[],
     gender: string,
