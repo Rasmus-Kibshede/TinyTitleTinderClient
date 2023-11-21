@@ -6,6 +6,53 @@ import { Name } from '../../types/name';
 import { NameSuggest } from '../components/NameSuggest';
 import axios from 'axios';
 import { getName } from '../../paths/urls';
+import styled from '@emotion/styled';
+
+interface StyledBoxProps {
+    getBoxColor: string;
+}
+
+interface StyledButtonProps {
+    buttonAction: string;
+}
+
+const StyledBox = styled(Box) <StyledBoxProps>`
+    height: 551px;
+    width: 900px;
+    border-radius: 56px;
+    margin: auto;
+    text-align: center;
+    padding: 4;
+    border: 3px solid #CBCBCB;
+    margin-top: 5%;
+    background-color: ${({ getBoxColor }) => {
+        switch (getBoxColor.toLowerCase()) {
+            case 'female':
+                return '#FFDBDB';
+            case 'male':
+                return '#B6EEFF';
+            default:
+                return '#FFCA80';
+        }
+    }};
+    `
+
+const StyledButtonBox = styled(Box)`
+    margin-top: 2;
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    `
+
+const StyledButton = styled(Button) <StyledButtonProps>`
+    color: ${({ buttonAction: test }) => test === 'up' ? 'green' : 'red'};
+    &:hover {
+        background-color: transparent;
+    };
+    border-radius: 50%;
+    `
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
@@ -33,54 +80,29 @@ const Swipe = () => {
         // TODO: Remove a liked / disliked name from the list and show a new one
     };
 
-    const getBoxColor = (gender: string) => {
-        switch (gender.toLowerCase()) {
-            case 'female':
-                return '#FFDBDB';
-            case 'male':
-                return '#B6EEFF';
-            default:
-                return '#FFCA80';
-        }
-    };
-
     return (
-        <>
-            <Box
-                sx={{
-                    height: '551px',
-                    width: '900px',
-                    borderRadius: '56px',
-                    bgcolor: getBoxColor(names[currentIndex]?.gender || 'unisex'),
-                    margin: 'auto',
-                    textAlign: 'center',
-                    padding: 4,
-                    border: '3px solid #CBCBCB',
-                    marginTop: '5%'
-                }}
-            >
-                {names.length > 0 && <NameSuggest name={names[currentIndex]} />}
+        names.length > 0 && (
+            <>
+                <StyledBox
+                    getBoxColor={names[currentIndex]?.gender || 'unisex'}
+                >
+                    <NameSuggest name={names[currentIndex]} />
 
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '65%', marginLeft: 'auto', marginRight: 'auto' }}>
-                    <Button onClick={() => handleThumbClick('down')} sx={{
-                        color: 'red', '&:hover': {
-                            backgroundColor: 'transparent',
-                        },
-                        borderRadius: '50%'
-                    }}>
-                        <ThumbDownIcon sx={{ fontSize: '100px' }} />
-                    </Button>
-                    <Button onClick={() => handleThumbClick('up')} sx={{
-                        color: 'green', '&:hover': {
-                            backgroundColor: 'transparent',
-                        },
-                        borderRadius: '50%'
-                    }}>
-                        <ThumbUpIcon sx={{ fontSize: '100px' }} />
-                    </Button>
-                </Box>
-            </Box>
-        </>
+                    <StyledButtonBox>
+                        <StyledButton onClick={() => handleThumbClick('down')}
+                            buttonAction={'down'}
+                        >
+                            <ThumbDownIcon sx={{ fontSize: '100px' }} />
+                        </StyledButton>
+                        <StyledButton onClick={() => handleThumbClick('up')}
+                            buttonAction={'up'}
+                        >
+                            <ThumbUpIcon sx={{ fontSize: '100px' }} />
+                        </StyledButton>
+                    </StyledButtonBox>
+                </StyledBox>
+            </>
+        )
     );
 };
 

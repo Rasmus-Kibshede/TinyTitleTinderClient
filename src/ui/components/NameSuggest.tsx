@@ -4,7 +4,9 @@ import { Name } from "../../types/name";
 export const NameSuggest = ({ name }: { name: Name }) => {
     return (
         <>
-            <Typography variant="h4">{name.nameSuggestName}</Typography>
+            <Typography variant="h4">
+                {name.nameSuggestName}
+            </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                 <Box sx={{ width: '45%' }}>
                     {name.meanings && name.meanings.length > 0 && (
