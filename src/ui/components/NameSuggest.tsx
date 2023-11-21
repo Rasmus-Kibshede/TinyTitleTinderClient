@@ -1,5 +1,28 @@
-import { Typography, Box, Button } from "@mui/material";
-import { Name } from "../../types/name";
+import { Typography, Box, Button, styled } from "@mui/material"
+import { Name } from "../../types/name"
+
+const StyledBox = styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    `
+
+const StyledButton = styled(Button)`
+    background-color: white;
+    color: black;
+    width: 300px;
+    box-shadow: 0px 3px 6px rgba(0, 3, 1, 0.50);
+    &:hover {
+        background-color: #f2f2f2;
+    };
+    `
+
+const StyledBoxInner = styled(Box)`
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    `
 
 export const NameSuggest = ({ name }: { name: Name }) => {
     return (
@@ -7,9 +30,9 @@ export const NameSuggest = ({ name }: { name: Name }) => {
             <Typography variant="h4">
                 {name.nameSuggestName}
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <Box sx={{ width: '45%' }}>
-                    {name.meanings && name.meanings.length > 0 && (
+            <StyledBox>
+                <StyledBoxInner>
+                    {name.meanings.length > 0 && (
                         <Typography variant="body1">
                             Meaning
                             <Typography variant="body2">
@@ -19,7 +42,7 @@ export const NameSuggest = ({ name }: { name: Name }) => {
                             </Typography>
                         </Typography>
                     )}
-                    {name.origins && name.origins.length > 0 && (
+                    {name.origins.length > 0 && (
                         <Typography variant="body1">
                             Description
                             <Typography variant="body2">
@@ -29,31 +52,34 @@ export const NameSuggest = ({ name }: { name: Name }) => {
                             </Typography>
                         </Typography>
                     )}
-                </Box>
-                <Box sx={{ width: '45%' }}>
+                </StyledBoxInner>
+                <StyledBoxInner>
                     <Typography variant="body1">
                         Gender
-                        <Typography variant='body2'>{name.gender}</Typography>
-                    </Typography>
-                    {name.origins && name.origins.length > 0 && (
-                        <Typography variant="body1">
-                            Religion
-                            <Typography variant="body2">
-                                {name.origins[0].religion.length > 20
-                                    ? `${name.origins[0].religion.substring(0, 20)}...`
-                                    : name.origins[0].religion}
-                            </Typography>
+                        <Typography variant='body2'>
+                            {name.gender}
                         </Typography>
-                    )}
-                </Box>
-            </Box>
-            <Button variant="contained" sx={{
-                backgroundColor: 'white', color: 'black', width: '300px', mt: 6, boxShadow: '0px 3px 6px rgba(0, 3, 1, 0.50)', '&:hover': {
-                    backgroundColor: '#f2f2f2',
-                },
-            }}>
+                    </Typography>
+                    <Typography variant="body1">
+                        {name.origins.length > 0 && (
+                            <Typography variant="body1">
+                                Religion
+                                <Typography variant="body2">
+                                    {name.origins[0].religion.length > 20
+                                        ? `${name.origins[0].religion.substring(0, 20)}...`
+                                        : name.origins[0].religion}
+                                </Typography>
+                            </Typography>
+                        )}
+                    </Typography>
+                </StyledBoxInner>
+            </StyledBox>
+
+            <StyledButton variant="contained">
                 READ MORE
-            </Button>
+            </StyledButton>
         </>
-    );
-};
+    )
+}
+
+
