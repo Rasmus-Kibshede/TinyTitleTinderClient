@@ -24,7 +24,7 @@ export default function SearchName() {
         fetchName();
     }, []);
 
-    const handleOnChange = (event: React.ChangeEvent<object>, value: string | null) => {
+    const handleOnChange = (_: React.ChangeEvent<object>, value: string | null) => {
         if (value) {
             navigate(`/swipe/${value}`);
         }
