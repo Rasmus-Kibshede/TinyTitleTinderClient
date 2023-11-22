@@ -8,9 +8,8 @@ export default {
         logo: "url('src/assets/images/logo.png')",
       },
       colors: {
-        primary: '#ff0000',
-        secondary: '#00ff00',
-        tertiary: '#0000ff',
+        orange: '#FFCA80',
+        green: '#D6FBE4',
       },
     },
     fontFamily: {

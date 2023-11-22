@@ -17,6 +17,7 @@ import { useAuthUserStore } from '../../store/user';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 import { useState } from 'react';
 import validator from 'validator';
+import { login } from '../../paths/urls';
 
 export default function SignIn() {
   const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
@@ -40,7 +41,7 @@ export default function SignIn() {
   }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await axios.post('http://localhost:3000/login', {
+    const response = await axios.post(login, {
       email: data.get('email'),
       password: data.get('password'),
     });
