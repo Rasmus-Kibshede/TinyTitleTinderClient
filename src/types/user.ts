@@ -1,6 +1,7 @@
 export interface User {
   email: string;
   roles: Role[] | Role;
+  parent: Parent;
 }
 
 export interface Parent extends User {
