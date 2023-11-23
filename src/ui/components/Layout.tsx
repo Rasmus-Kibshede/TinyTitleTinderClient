@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import MainMenuNavBar from "./MainMenuNavBar";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Outlet } from 'react-router-dom';
+import MainMenuNavBar from './MainMenuNavBar';
+import CustomizedSnackbars from './CustomizedSnackbars';import { ThemeProvider, createTheme } from "@mui/material";
 
 const THEME = createTheme({
     typography: {
@@ -26,15 +26,16 @@ const THEME = createTheme({
 })
 
 function Layout() {
-    return (
-        <div id="wrapper">
+  return (
+    <div id="wrapper" className='bg-[#D6FBE4] h-screen font-main'>
             <ThemeProvider theme={THEME}>
-                <MainMenuNavBar />
-                <Outlet />
+          <MainMenuNavBar />
+          <CustomizedSnackbars />
+      <img src="src\assets\images\logo.png" />
+      <Outlet />
             </ThemeProvider>
-        </div>
-    );
+    </div>
+  );
 }
 
-export default Layout
-
+export default Layout;
