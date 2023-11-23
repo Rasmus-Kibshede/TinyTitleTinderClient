@@ -7,29 +7,10 @@ import SignUp from '../ui/pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Home from '../ui/pages/Home';
 import Profile from '../ui/pages/Profile';
-import { useAuthUserStore } from '../store/user';
-import { User } from '../types/userDatatype';
-import { useEffect } from 'react';
 
 function AppRouter() {
-  const setAuthUser = useAuthUserStore((state) => state.setAuthUser);
 
   // Example how to use user store
-  useEffect(() => {
-    // Dummy data
-    const role: Role = {
-      title: 'admin',
-    };
-
-    // Dummy data
-    const user: User = {
-      email: 'test@gmail.com',
-      roles: role,
-    };
-
-    setAuthUser(user, 'token');
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>
