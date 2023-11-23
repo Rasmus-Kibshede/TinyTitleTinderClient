@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useAuthUserStore } from '../../store/user';
 import { logout } from '../../paths/urls';
 import axios from 'axios';
@@ -11,7 +10,6 @@ function Logout() {
   const navigate = useNavigate();
   const snackbarStore = useSnackbarDisplay();
 
-  useEffect(() => {}, []);
 
   const logoutUser = async () => {
     try {

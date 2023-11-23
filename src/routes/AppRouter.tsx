@@ -7,15 +7,10 @@ import SignUp from '../ui/pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Home from '../ui/pages/Home';
 import Profile from '../ui/pages/Profile';
-import { useEffect } from 'react';
 
 function AppRouter() {
 
   // Example how to use user store
-  useEffect(() => {
-   
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>

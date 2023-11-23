@@ -17,12 +17,23 @@ import { useAuthUserStore } from '../../store/user';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 import { useState } from 'react';
 import validator from 'validator';
+import { login } from '../../paths/urls';
 
 export default function SignIn() {
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [isValidPassword, setIsValidPassword] = useState<boolean>(false);
+
   const user = useAuthUserStore();
   const snackbarStore = useSnackbarDisplay();
-
   const navigate = useNavigate();
+
+  const validatePassword = (password: string) => {
+    setIsValidPassword(!validator.isStrongPassword(password));
+  };
+
+  const validateEmail = (email: string) => {
+    setIsValidEmail(!validator.isEmail(email));
+  };
 
   const handleSubmit = async (event: {
     preventDefault: () => void;
@@ -30,12 +41,10 @@ export default function SignIn() {
   }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await axios.post('http://localhost:3000/login', {
+    const response = await axios.post(login, {
       email: data.get('email'),
       password: data.get('password'),
     });
-
-    console.log(response);
 
     if (response.data.success) {
       user.setAuthUser(response.data.data.user);
@@ -46,14 +55,9 @@ export default function SignIn() {
 
       navigate('/profile');
     } else {
-      console.log('Invalid email or password');
-
       snackbarStore.setSnackbar(true, 'Invalid email or password', 'error');
     }
   };
-
-  const [email, setEmail] = useState<string>('');
-  // const [password, setPassword] = useState<string>('');
 
   return (
     <Container component="main" maxWidth="xs">
@@ -74,9 +78,9 @@ export default function SignIn() {
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
-            error={!validator.isEmail(email)}
-            helperText={'Invalid email'}
-            onChange={(e) => setEmail(e.target.value)}
+            error={isValidEmail}
+            helperText={isValidEmail && 'Invalid email'}
+            onChange={(e) => validateEmail(e.target.value)}
             required
             fullWidth
             id="email"
@@ -87,6 +91,11 @@ export default function SignIn() {
           />
           <TextField
             margin="normal"
+            error={isValidPassword}
+            helperText={
+              isValidPassword &&
+              'Password must be at least 8 characters long and contain at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol'
+            }
             required
             fullWidth
             name="password"
@@ -94,6 +103,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(e) => validatePassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -102,6 +112,7 @@ export default function SignIn() {
           <Button
             type="submit"
             fullWidth
+            disabled={isValidEmail || isValidPassword}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >

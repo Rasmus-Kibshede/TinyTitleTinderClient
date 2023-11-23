@@ -23,7 +23,6 @@ function ProtectedRoute({ redirectPath }: Props) {
 
         setUserAuth(data.data);
       } catch (error) {
-        //Snackbar here when it is on global reach
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data);
         } else {
@@ -34,7 +33,6 @@ function ProtectedRoute({ redirectPath }: Props) {
 
     if (user.authUser) {
       authCheck();
-      console.log(userAuth);
     } else {
       // mesasage here
     }
