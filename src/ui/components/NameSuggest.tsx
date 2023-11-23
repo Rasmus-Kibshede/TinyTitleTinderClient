@@ -1,30 +1,7 @@
 import { Typography, Box, Button, styled } from "@mui/material"
 import { Name } from "../../types/name"
 
-const StyledBox = styled(Box)`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    `
-
-const StyledButton = styled(Button)`
-    background-color: white;
-    color: black;
-    width: 300px;
-    box-shadow: 0px 3px 6px rgba(0, 3, 1, 0.50);
-    &:hover {
-        background-color: #f2f2f2;
-    };
-    `
-
-const StyledBoxInner = styled(Box)`
-    margin-top: 2%;
-    display: flex;
-    flex-direction: column;
-    width: 45%;
-    `
-
-export const NameSuggest = ({ name }: { name: Name }) => {
+const NameSuggest = ({ name }: { name: Name }) => {
     return (
         <>
             <Typography variant="h4">
@@ -82,4 +59,27 @@ export const NameSuggest = ({ name }: { name: Name }) => {
     )
 }
 
+export default NameSuggest;
 
+const StyledBox = styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    `
+
+const StyledButton = styled(Button)`
+    background-color: white;
+    color: black;
+    width: 300px;
+    box-shadow: 0px 3px 6px rgba(0, 3, 1, 0.50);
+    &:hover {
+        background-color: #f2f2f2;
+    };
+    `
+
+const StyledBoxInner = styled(Box)`
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    `
