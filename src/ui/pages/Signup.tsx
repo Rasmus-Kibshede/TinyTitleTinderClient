@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import {
   Button,
   TextField,
@@ -10,29 +9,35 @@ import {
   InputLabel,
   FormControl,
   MenuItem,
-} from '@mui/material';
-import validator from 'validator';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Country } from '../../types/country';
+} from "@mui/material";
+import validator from "validator";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { Country } from "../../types/country";
+import { signup, locations } from "../../paths/urls";
+import { useSnackbarDisplay } from "../../store/snackbarDisplay";
 
 export default function SignUp() {
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [selectedCountryName, setSelectedCountryName] = useState<string>(''); // sæt id fra countrylist
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [selectedCountryName, setSelectedCountryName] = useState<string>(""); 
   const [countries, setCountries] = useState<Country[]>([]);
-  const [city, setCity] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [address, setAddress] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
+  const [city, setCity] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+
+  const snackbarStore = useSnackbarDisplay();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLocations = async () => {
       const locationsResponse = await axios.get(
-        'http://localhost:3000/locations'
+        locations
       );
       const result = await locationsResponse.data.data;
       setCountries(result);
@@ -49,10 +54,10 @@ export default function SignUp() {
       );
 
       if (!getCountryObejct) {
-        console.log('no country found');
+        console.log("no country found");
       } else {
-
-        const user = {
+        const response = await axios.post(
+          signup, {
           email: email,
           password: password,
           age: age,
@@ -63,16 +68,14 @@ export default function SignUp() {
           city: city,
           zipcode: zipcode,
           address: address,
-        };
-
-        const response = await axios.post(
-          'http://localhost:3000/users/signup',
-          { user }
-        );
-        console.log('Request sent succesfully!', response.data);
+        });
+        console.log("Request sent succesfully!", response.data);
+        snackbarStore.setSnackbar(true, 'You are signed up', 'success');
+        navigate('/signin'); 
       }
     } catch (error) {
-      console.error('Error, data not send!', error);
+      console.error("Error, data not send!", error);
+      snackbarStore.setSnackbar(true, 'Invalid input try again', 'error');
     }
   };
 
@@ -91,13 +94,12 @@ export default function SignUp() {
       <Container component="main" maxWidth="xs">
         <Typography
           sx={{
-            marginTop: '90px',
-            textAlign: 'center',
-            color: '#27963C',
-            fontFamily: 'Josefin Sans, sans-serif',
-            fontWeight: '400',
-            fontSize: '48px',
-            letterSpacing: '0.4',
+            textAlign: "center",
+            color: "#27963C",
+            fontFamily: "Josefin Sans, sans-serif",
+            fontWeight: "regular",
+            fontSize: "48px",
+            letterSpacing: "0.4",
           }}
         >
           TinyTitleTinder
@@ -105,9 +107,9 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Box
@@ -116,7 +118,7 @@ export default function SignUp() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Typography component="h1" variant="h5" marginBottom={'10px'}>
+            <Typography component="h1" variant="h5" marginBottom={"10px"}>
               Sign up
             </Typography>
             <Grid container spacing={2}>
@@ -132,8 +134,8 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -152,8 +154,8 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -172,8 +174,8 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -185,7 +187,7 @@ export default function SignUp() {
                 item
                 xs={12}
                 sm={6}
-                style={{ marginBottom: '40px', width: '600px' }}
+                style={{ marginBottom: "40px", width: "600px" }}
               >
                 <TextField
                   error={!validator.isStrongPassword(password)}
@@ -198,8 +200,8 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -219,8 +221,8 @@ export default function SignUp() {
                   label="Age"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -248,8 +250,8 @@ export default function SignUp() {
                   label="Gender"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -259,20 +261,25 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControl required sx={{ m: 0, minWidth: 285 }}>
-                  <InputLabel id="demo-simple-select-disabled-label">
-                    Country
+                  <InputLabel id="demo-simple-select-label">
+                    Select a country
                   </InputLabel>
                   <Select
+                    error={
+                      (
+                        validator.isEmpty(selectedCountryName)
+                      )
+                    }
                     value={selectedCountryName}
                     required
                     fullWidth
                     name="country"
                     id="country"
-                    label="Country!"
+                    label="Select a country"
                     autoFocus
                     sx={{
-                      '& fieldset': {
-                        borderColor: 'green',
+                      "& fieldset": {
+                        borderColor: "green",
                       },
                     }}
                     onChange={(e) => {
@@ -312,8 +319,8 @@ export default function SignUp() {
                   label="City"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -332,8 +339,8 @@ export default function SignUp() {
                   label="Zipcode"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -352,8 +359,8 @@ export default function SignUp() {
                   label="Address"
                   autoFocus
                   sx={{
-                    '& fieldset': {
-                      borderColor: 'green',
+                    "& fieldset": {
+                      borderColor: "green",
                     },
                   }}
                   onChange={(e) => {
@@ -369,9 +376,9 @@ export default function SignUp() {
                   variant="contained"
                   sx={{
                     mt: 1,
-                    backgroundColor: '#27963C',
-                    '&:hover': {
-                      backgroundColor: 'green',
+                    backgroundColor: "#27963C",
+                    "&:hover": {
+                      backgroundColor: "green",
                     },
                   }}
                 >
@@ -385,11 +392,11 @@ export default function SignUp() {
                     variant="contained"
                     sx={{
                       mt: 1,
-                      textDecoration: 'none',
-                      color: 'black',
-                      backgroundColor: 'transparent',
-                      '&:hover': {
-                        backgroundColor: 'red',
+                      textDecoration: "none",
+                      color: "black",
+                      backgroundColor: "transparent",
+                      "&:hover": {
+                        backgroundColor: "red",
                       },
                     }}
                   >
