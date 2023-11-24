@@ -3,6 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
 import { useAuthUserStore } from '../../store/user';
+import { SideNavBar } from './SideNavBar';
 /**
  * Top navbar component
  */
@@ -76,6 +77,7 @@ export default function MainMenuNavBar() {
               </>
             )}
           </Typography>
+          <SideNavBar />
         </Toolbar>
       </AppBar>
     </Box>
