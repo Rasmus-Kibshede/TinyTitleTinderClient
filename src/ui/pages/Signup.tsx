@@ -79,7 +79,7 @@ export default function SignUp() {
     }
   };
 
-  const validateStringLenght = (value: string, min: number, max: number) => {
+  const validateStringLength = (value: string, min: number, max: number) => {
     return !(
       validator.isAlpha(value) &&
       validator.isLength(value, {
