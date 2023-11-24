@@ -34,7 +34,7 @@ const menuItems = [
     },
 ];
 
-export const SideDrawer = () => {
+export const SideNavBar = () => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -50,7 +50,7 @@ export const SideDrawer = () => {
                 <MenuIcon />
             </IconButton>
             <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-                <Box width="250px" textAlign="center">
+                <Box width="250px" textAlign="center" >
                     <Typography variant="h6" component="div">
                         Settings
                     </Typography>
