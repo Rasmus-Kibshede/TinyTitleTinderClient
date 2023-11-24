@@ -7,6 +7,7 @@ import {
     ListItemText,
     ListItemIcon,
     ListItemButton,
+    styled,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
@@ -15,22 +16,21 @@ import { AccountBox } from "@mui/icons-material/";
 import GradeIcon from "@mui/icons-material/Grade";
 import LinkIcon from '@mui/icons-material/Link';
 
-//TODO: Add more menu items
 const menuItems = [
     {
         text: "Account",
-        icon: <AccountBox color="primary" />,
+        icon: <AccountBox />,
         path: "accountSettings",
     },
     {
         text: "Liked names",
-        icon: <GradeIcon color="primary" />,
+        icon: <GradeIcon />,
         path: "likedNames",
     },
     {
-        text: "Connected caregivers",
-        icon: <LinkIcon color="primary" />,
-        path: "connectedCaregivers",
+        text: "Tiny Title Ties",
+        icon: <LinkIcon />,
+        path: "tinyTitleTies",
     },
 ];
 
@@ -40,26 +40,35 @@ export const SideNavBar = () => {
     return (
         <>
             <IconButton
-                size="large"
-                edge="start"
-                color="default"
-                aria-label="menu"
                 onClick={() => setOpen(true)}
                 sx={{ ml: 2 }}
             >
                 <MenuIcon />
             </IconButton>
-            <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-                <Box width="250px" textAlign="center" >
-                    <Typography variant="h6" component="div">
+            <Drawer
+                anchor="right"
+                open={open}
+                onClose={() => setOpen(false)}
+                PaperProps={{
+                    style: drawerPaperStyles,
+                }}
+            >
+                <Box textAlign="center" >
+                    <StyledHeader>
                         Settings
-                    </Typography>
+                    </StyledHeader>
                     <List>
                         {menuItems.map((item) => (
                             <Link to={item.path} key={item.text}>
                                 <ListItemButton>
-                                    <ListItemIcon>{item.icon}</ListItemIcon>
-                                    <ListItemText primary={item.text} />
+                                    <StyledIcon>{item.icon}</StyledIcon>
+                                    <ListItemText
+                                        primary={
+                                            <StyledTypography>
+                                                {item.text}
+                                            </StyledTypography>
+                                        }
+                                    />
                                 </ListItemButton>
                             </Link>
                         ))}
@@ -68,4 +77,30 @@ export const SideNavBar = () => {
             </Drawer>
         </>
     );
+};
+
+const StyledTypography = styled(Typography)`
+    font-family: 'Josefin Sans';
+    font-weight: 'regular';
+    font-size: 20px;
+    line-height: 30px;
+    color: #000000;
+    `;
+
+const StyledHeader = styled(Typography)`
+    font-family: 'Josefin Sans';
+    font-weight: bold;
+    font-size: 30px;
+    color: #000000;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    `;
+
+const StyledIcon = styled(ListItemIcon)`
+    background-color: #FFCA80;
+    `;
+
+const drawerPaperStyles = {
+    backgroundColor: '#FFCA80',
+    width: '250px',
 };
