@@ -17,14 +17,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { Country } from "../../types/country";
 import { signup, locations } from "../../paths/urls";
 import { useSnackbarDisplay } from "../../store/snackbarDisplay";
-import SignupStyling from "../reusables/SignupStyling";
+import styled from "@emotion/styled";
+import { StyledInputField } from "../reusables/SignupStyling";
 
 export default function SignUp() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedCountryName, setSelectedCountryName] = useState<string>(""); 
+  const [selectedCountryName, setSelectedCountryName] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
@@ -37,9 +38,7 @@ export default function SignUp() {
 
   useEffect(() => {
     const fetchLocations = async () => {
-      const locationsResponse = await axios.get(
-        locations
-      );
+      const locationsResponse = await axios.get(locations);
       const result = await locationsResponse.data.data;
       setCountries(result);
     };
@@ -55,10 +54,9 @@ export default function SignUp() {
       );
 
       if (!getCountryObejct) {
-        snackbarStore.setSnackbar(true, 'No country found', 'error');
+        snackbarStore.setSnackbar(true, "No country found", "error");
       } else {
-        const response = await axios.post(
-          signup, {
+        const response = await axios.post(signup, {
           email: email,
           password: password,
           age: age,
@@ -71,12 +69,12 @@ export default function SignUp() {
           address: address,
         });
         console.log("Request sent succesfully!", response.data);
-        snackbarStore.setSnackbar(true, 'You are signed up', 'success');
-        navigate('/signin'); 
+        snackbarStore.setSnackbar(true, "You are signed up", "success");
+        navigate("/signin");
       }
     } catch (error) {
       console.error("Error, data not send!", error);
-      snackbarStore.setSnackbar(true, 'Invalid input try again', 'error');
+      snackbarStore.setSnackbar(true, "Invalid input try again", "error");
     }
   };
 
@@ -93,15 +91,7 @@ export default function SignUp() {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <SignupStyling />
-        <Box
-          sx={{
-            marginTop: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <StyledBox>
           <Box
             component="form"
             noValidate
@@ -113,7 +103,7 @@ export default function SignUp() {
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   autoComplete="given-name"
                   error={validateStringLength(firstname, 2, 40)}
                   value={firstname}
@@ -123,18 +113,13 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setFirstname(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   error={validateStringLength(lastname, 2, 40)}
                   value={lastname}
                   required
@@ -143,18 +128,13 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setLastname(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   error={!validator.isEmail(email)}
                   value={email}
                   required
@@ -163,11 +143,6 @@ export default function SignUp() {
                   label="Email address"
                   name="email"
                   autoComplete="email"
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
@@ -179,7 +154,7 @@ export default function SignUp() {
                 sm={6}
                 style={{ marginBottom: "40px", width: "600px" }}
               >
-                <TextField
+                <StyledInputField
                   error={!validator.isStrongPassword(password)}
                   value={password}
                   required
@@ -189,18 +164,13 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   autoComplete="given-name"
                   error={!validator.isNumeric(age)}
                   value={age}
@@ -210,22 +180,15 @@ export default function SignUp() {
                   id="age"
                   label="Age"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setAge(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   autoComplete="given-name"
-                  error={
-                    !(validateStringLength(gender, 4, 6))
-                  }
+                  error={!validateStringLength(gender, 4, 6)}
                   value={gender}
                   required
                   fullWidth
@@ -233,11 +196,6 @@ export default function SignUp() {
                   id="gender"
                   label="Gender"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setGender(e.target.value);
                   }}
@@ -249,11 +207,7 @@ export default function SignUp() {
                     Select a country
                   </InputLabel>
                   <Select
-                    error={
-                      (
-                        validator.isEmpty(selectedCountryName)
-                      )
-                    }
+                    error={validator.isEmpty(selectedCountryName)}
                     value={selectedCountryName}
                     required
                     fullWidth
@@ -293,7 +247,7 @@ export default function SignUp() {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   error={!validator.isAlpha(city)}
                   value={city}
                   required
@@ -302,18 +256,13 @@ export default function SignUp() {
                   id="city"
                   label="City"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setCity(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   error={!validator.isAlphanumeric(zipcode)}
                   value={zipcode}
                   required
@@ -322,18 +271,13 @@ export default function SignUp() {
                   id="zipcode"
                   label="Zipcode"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setZipcode(e.target.value);
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <StyledInputField
                   error={!validator.isAscii(address)}
                   value={address}
                   required
@@ -342,11 +286,6 @@ export default function SignUp() {
                   id="address"
                   label="Address"
                   autoFocus
-                  sx={{
-                    "& fieldset": {
-                      borderColor: "green",
-                    },
-                  }}
                   onChange={(e) => {
                     setAddress(e.target.value);
                   }}
@@ -371,27 +310,31 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={6}>
                 <Link to="/">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                      mt: 1,
-                      textDecoration: "none",
-                      color: "black",
-                      backgroundColor: "transparent",
-                      "&:hover": {
-                        backgroundColor: "red",
-                      },
-                    }}
-                  >
+                  <StyledButton type="submit" variant="contained">
                     Cancel
-                  </Button>
+                  </StyledButton>
                 </Link>
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </StyledBox>
       </Container>
     </>
   );
 }
+
+const StyledBox = styled(Box)`
+  margin-top: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 9%;
+  color: black;
+  background-color: transparent; 
+  &:hover { 
+    background-color: red; 
+  } 
+`;
