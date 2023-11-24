@@ -27,14 +27,6 @@ export default function SignIn() {
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
 
-  const validatePassword = (password: string) => {
-    setIsValidPassword(!validator.isStrongPassword(password));
-  };
-
-  const validateEmail = (email: string) => {
-    setIsValidEmail(!validator.isEmail(email));
-  };
-
   const handleSubmit = async (event: {
     preventDefault: () => void;
     currentTarget: HTMLFormElement | undefined;
@@ -80,7 +72,9 @@ export default function SignIn() {
             margin="normal"
             error={isValidEmail}
             helperText={isValidEmail && 'Invalid email'}
-            onChange={(e) => validateEmail(e.target.value)}
+            onChange={(e) =>
+              setIsValidEmail(!validator.isEmail(e.target.value))
+            }
             required
             fullWidth
             id="email"
@@ -103,7 +97,9 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(e) => validatePassword(e.target.value)}
+            onChange={(e) =>
+              setIsValidPassword(!validator.isStrongPassword(e.target.value))
+            }
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
