@@ -86,7 +86,7 @@ const StyledBox = styled(Box) <StyledBoxProps>`
             case 'male':
                 return '#B6EEFF';
             default:
-                return '#FFCA80';
+                return 'primary.main';
         }
     }};
     `
