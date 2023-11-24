@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Country } from "../../types/country";
 import { signup, locations } from "../../paths/urls";
 import { useSnackbarDisplay } from "../../store/snackbarDisplay";
+import SignupStyling from "../reusables/SignupStyling";
 
 export default function SignUp() {
   const [firstname, setFirstname] = useState("");
@@ -54,7 +55,7 @@ export default function SignUp() {
       );
 
       if (!getCountryObejct) {
-        console.log("no country found");
+        snackbarStore.setSnackbar(true, 'No country found', 'error');
       } else {
         const response = await axios.post(
           signup, {
@@ -92,18 +93,7 @@ export default function SignUp() {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <Typography
-          sx={{
-            textAlign: "center",
-            color: "#27963C",
-            fontFamily: "Josefin Sans, sans-serif",
-            fontWeight: "regular",
-            fontSize: "48px",
-            letterSpacing: "0.4",
-          }}
-        >
-          TinyTitleTinder
-        </Typography>
+        <SignupStyling />
         <Box
           sx={{
             marginTop: 5,
@@ -125,7 +115,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  error={validateStringLenght(firstname, 2, 40)}
+                  error={validateStringLength(firstname, 2, 40)}
                   value={firstname}
                   required
                   fullWidth
@@ -145,7 +135,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  error={validateStringLenght(lastname, 2, 40)}
+                  error={validateStringLength(lastname, 2, 40)}
                   value={lastname}
                   required
                   fullWidth
@@ -234,13 +224,7 @@ export default function SignUp() {
                 <TextField
                   autoComplete="given-name"
                   error={
-                    !(
-                      validator.isAlpha(gender) &&
-                      validator.isLength(gender, {
-                        min: 4,
-                        max: 6,
-                      })
-                    )
+                    !(validateStringLength(gender, 4, 6))
                   }
                   value={gender}
                   required
