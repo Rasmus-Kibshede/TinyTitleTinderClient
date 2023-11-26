@@ -3,11 +3,10 @@ import { Box, Button } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { Name } from '../../types/name';
-import { NameSuggest } from '../components/NameSuggest';
+import NameSuggest from '../components/NameSuggest';
 import axios from 'axios';
 import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
 
 interface StyledBoxProps {
     gender: string;

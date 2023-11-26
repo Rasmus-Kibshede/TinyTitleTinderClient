@@ -1,6 +1,9 @@
-import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
+import Logout from './Logout';
+import { useAuthUserStore } from '../../store/user';
+import { SideNavBar } from './SideNavBar';
 import SearchName from "./SearchName";
 
 const linkStyle = {
@@ -9,6 +12,8 @@ const linkStyle = {
 };
 
 export default function MainMenuNavBar() {
+  const user = useAuthUserStore();
+
   return (
     <AppBar>
       <Toolbar sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
@@ -34,5 +39,40 @@ export default function MainMenuNavBar() {
         </Typography>
       </Toolbar>
     </AppBar>
+          <Typography variant="h6">
+            {user.authUser ? (
+              <>
+                <Logout />
+                <Link
+                  style={{ marginRight: '10px' }}
+                  className="text-black no-underline"
+                  to="profile"
+                >
+                  Profile
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  style={{ marginRight: '10px' }}
+                  className="text-black no-underline"
+                  to="signup"
+                >
+                  Signup
+                </Link>
+                <Link
+                  style={{ marginRight: '10px' }}
+                  className="text-black no-underline"
+                  to="signin"
+                >
+                  Login
+                </Link>
+              </>
+            )}
+          </Typography>
+          <SideNavBar />
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
