@@ -21,8 +21,10 @@ const NameSuggest = ({ name }: { name: Name }) => {
 };
 
 const renderField = (label: string, value?: string, placeholder?: string) => (
-    <Typography variant="body1">
-        {label}
+    <div>
+        <Typography variant="body1">
+            {label}
+        </Typography>
         <Typography variant="body2">
             {value ? (
                 value.length > 20 ? `${value.substring(0, 20)}...` : value
@@ -30,7 +32,8 @@ const renderField = (label: string, value?: string, placeholder?: string) => (
                 placeholder
             )}
         </Typography>
-    </Typography>
+    </div>
+
 );
 
 export default NameSuggest;

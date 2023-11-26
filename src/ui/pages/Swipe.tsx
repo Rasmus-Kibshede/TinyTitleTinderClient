@@ -41,7 +41,6 @@ const Swipe = () => {
                     gender={names[currentIndex]?.gender || 'unisex'}
                 >
                     <NameSuggest name={names[currentIndex]} />
-
                     <StyledButtonBox>
                         <StyledButton onClick={() => handleThumbClick('down')}
                             buttonAction={'down'}
@@ -86,7 +85,7 @@ const StyledBox = styled(Box) <StyledBoxProps>`
             case 'male':
                 return '#B6EEFF';
             default:
-                return 'primary.main';
+                return '#FFCA80';
         }
     }};
     `
