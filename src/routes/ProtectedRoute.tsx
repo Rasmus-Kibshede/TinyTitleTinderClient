@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { checkauthPath } from '../paths/urls';
+import { checkAuthPath } from '../paths/urls';
 import { useAuthUserStore } from '../store/user';
 
 interface Props {
@@ -15,7 +15,7 @@ function ProtectedRoute({ redirectPath }: Props) {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const { data } = await axios.get(checkauthPath, {
+        const { data } = await axios.get(checkAuthPath, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
