@@ -20,17 +20,17 @@ import styled from "@emotion/styled";
 import { StyledInputField } from "../reusables/SignupStyling";
 
 export default function SignUp() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [selectedCountryName, setSelectedCountryName] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
-  const [city, setCity] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [address, setAddress] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
+  const [city, setCity] = useState<string>("");
+  const [zipcode, setZipcode] = useState<string>("");
+  const [street, setStreet] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
 
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
@@ -65,14 +65,14 @@ export default function SignUp() {
           locationId: getCountryObejct.locationId,
           city: city,
           zipcode: zipcode,
-          address: address,
+          street: street,
         });
-        console.log("Request sent succesfully!", response.data);
+        response.data
         snackbarStore.setSnackbar(true, "You are signed up", "success");
         navigate("/signin");
       }
     } catch (error) {
-      console.error("Error, data not send!", error);
+      error
       snackbarStore.setSnackbar(true, "Invalid input try again", "error");
     }
   };
@@ -187,7 +187,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <StyledInputField
                   autoComplete="given-name"
-                  error={!validateStringLength(gender, 4, 6)}
+                  error={validateStringLength(gender, 4, 6)}
                   value={gender}
                   required
                   fullWidth
@@ -277,16 +277,16 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <StyledInputField
-                  error={!validator.isAscii(address)}
-                  value={address}
+                  error={validator.isEmpty(street)}
+                  value={street}
                   required
                   fullWidth
-                  name="address"
-                  id="address"
-                  label="Address"
+                  name="street"
+                  id="street"
+                  label="Street"
                   autoFocus
                   onChange={(e) => {
-                    setAddress(e.target.value);
+                    setStreet(e.target.value);
                   }}
                 />
               </Grid>
