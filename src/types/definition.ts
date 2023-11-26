@@ -1,4 +1,4 @@
 export interface Definition {
-    id?: number,
+    definitionId?: number,
     meaning: string,
 }

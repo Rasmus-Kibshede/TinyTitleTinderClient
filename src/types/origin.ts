@@ -1,6 +1,6 @@
 import { Definition } from "./definition";
 export interface Origin {
-    id?: number,
+    originId?: number,
     region: string,
     religion: string,
     description: string,

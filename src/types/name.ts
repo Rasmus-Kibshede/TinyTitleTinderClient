@@ -1,6 +1,6 @@
 import { Origin } from "./origin";
 export interface Name {
-    id?: number,
+    nameId?: number,
     nameSuggestName: string,
     origins: Origin[],
     gender: string,
