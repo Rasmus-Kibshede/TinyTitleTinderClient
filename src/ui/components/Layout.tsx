@@ -37,5 +37,10 @@ const THEME = createTheme({
       'marginBottom': '25px',
       'marginTop': '25px',  
     },
+    h6: {
+      'fontFamily': `"Josefin sans", sans-serif`,
+      'fontSize': '20px',
+      'fontWeight': '500',
+    }
   }
 })

@@ -7,10 +7,12 @@ import { Name } from '../../types/name';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 export default function SearchName() {
     const [names, setNames] = useState<Name[]>([]);
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const fetchName = async () => {
@@ -27,26 +29,40 @@ export default function SearchName() {
     const handleOnChange = (_: React.ChangeEvent<object>, value: string | null) => {
         if (value) {
             navigate(`/swipe/${value}`);
+            setOpen(false);
         }
     };
 
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <SearchIcon sx={{ color: '#000000', marginBottom: '1%' }} />
+                <SearchIcon sx={{ color: '#000000', marginTop: '2%' }} />
                 <Autocomplete
                     autoHighlight
                     disablePortal
                     onChange={handleOnChange}
+                    open={open}
+                    onInputChange={(_, value) => setOpen(!!value)}
+                    popupIcon={null}
                     options={names.map((option) => option.nameSuggestName)}
-                    sx={{ width: 220, backgroundColor: 'transparent', }}
+                    sx={{ width: 220, backgroundColor: 'transparent' }}
                     renderInput={(params) =>
-                        <TextField {...params}
-                            label="Search name"
+                        <StyledTextField {...params}
+                            label='Search name'
                             variant='standard'
-                            sx={{ color: '#000000' }} />}
+                        />
+                    }
                 />
             </Box>
         </>
     );
 }
+
+const StyledTextField = styled(TextField)`
+    & label.Mui-focused {
+        color: black;
+    }
+    & .MuiInput-underline:after {
+        border-bottom-color: black;
+    }
+`;

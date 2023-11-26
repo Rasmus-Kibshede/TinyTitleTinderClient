@@ -7,52 +7,7 @@ import NameSuggest from '../components/NameSuggest';
 import axios from 'axios';
 import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
-
-interface StyledBoxProps {
-    gender: string;
-}
-
-interface StyledButtonProps {
-    buttonAction: string;
-}
-
-const StyledBox = styled(Box) <StyledBoxProps>`
-    height: 551px;
-    width: 900px;
-    border-radius: 56px;
-    margin: auto;
-    text-align: center;
-    padding: 4;
-    border: 3px solid #CBCBCB;
-    margin-top: 5%;
-    background-color: ${({ gender }) => {
-        switch (gender.toLowerCase()) {
-            case 'female':
-                return '#FFDBDB';
-            case 'male':
-                return '#B6EEFF';
-            default:
-                return '#FFCA80';
-        }
-    }};
-    `;
-
-const StyledButtonBox = styled(Box)`
-    margin-top: 2;
-    display: flex;
-    justify-content: space-between;
-    width: 65%;
-    margin-left: auto;
-    margin-right: auto;
-    `;
-
-const StyledButton = styled(Button) <StyledButtonProps>`
-    color: ${({ buttonAction }) => buttonAction === 'up' ? 'green' : 'red'};
-    &:hover {
-        background-color: transparent;
-    };
-    border-radius: 50%;
-    `;
+import { useParams } from 'react-router-dom';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
@@ -113,3 +68,49 @@ const Swipe = () => {
 };
 
 export default Swipe;
+
+interface StyledBoxProps {
+    gender: string;
+}
+
+interface StyledButtonProps {
+    buttonAction: string;
+}
+
+const StyledBox = styled(Box) <StyledBoxProps>`
+    height: 551px;
+    width: 900px;
+    border-radius: 56px;
+    margin: auto;
+    text-align: center;
+    padding: 4;
+    border: 3px solid #CBCBCB;
+    margin-top: 5%;
+    background-color: ${({ gender }) => {
+        switch (gender.toLowerCase()) {
+            case 'female':
+                return '#FFDBDB';
+            case 'male':
+                return '#B6EEFF';
+            default:
+                return '#FFCA80';
+        }
+    }};
+    `;
+
+const StyledButtonBox = styled(Box)`
+    margin-top: 2;
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    `;
+
+const StyledButton = styled(Button) <StyledButtonProps>`
+    color: ${({ buttonAction }) => buttonAction === 'up' ? 'green' : 'red'};
+    &:hover {
+        background-color: transparent;
+    };
+    border-radius: 50%;
+    `;
