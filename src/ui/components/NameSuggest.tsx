@@ -21,7 +21,7 @@ const NameSuggest = ({ name }: { name: Name }) => {
 };
 
 const renderField = (label: string, value?: string, placeholder?: string) => (
-    <Typography variant="body1" key={label}>
+    <Typography variant="body1">
         {label}
         <Typography variant="body2">
             {value ? (
