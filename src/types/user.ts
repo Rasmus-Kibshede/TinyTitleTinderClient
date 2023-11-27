@@ -1,4 +1,4 @@
-import { Address } from "./address";
+import { Parent } from "./parent";
 
 export interface User {
   email: string;
@@ -6,11 +6,3 @@ export interface User {
   parent: Parent;
 }
 
-export interface Parent extends User {
-  parentId: number;
-  fistName: string;
-  lastName: string;
-  gender: string;
-  age: number;
-  address: Address;
-}
