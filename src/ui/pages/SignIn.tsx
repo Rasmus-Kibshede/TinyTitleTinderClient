@@ -24,6 +24,8 @@ export default function SignIn() {
   const [isValidPassword, setIsValidPassword] = useState<boolean>(false);
 
   const user = useAuthUserStore();
+  console.log(user);
+  
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
 
