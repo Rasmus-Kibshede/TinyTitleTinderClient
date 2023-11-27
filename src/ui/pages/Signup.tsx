@@ -8,29 +8,29 @@ import {
   InputLabel,
   FormControl,
   MenuItem,
-} from "@mui/material";
-import validator from "validator";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { Country } from "../../types/country";
-import { signup, locations } from "../../paths/urls";
-import { useSnackbarDisplay } from "../../store/snackbarDisplay";
-import styled from "@emotion/styled";
-import { StyledInputField } from "../reusables/ReusablesStyling";
+} from '@mui/material';
+import validator from 'validator';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { Country } from '../../types/country';
+import { signup, locations } from '../../paths/urls';
+import { useSnackbarDisplay } from '../../store/snackbarDisplay';
+import styled from '@emotion/styled';
+import { StyledInputField } from '../reusables/ReusablesStyling';
 
 export default function SignUp() {
-  const [firstname, setFirstname] = useState<string>("");
-  const [lastname, setLastname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [selectedCountryName, setSelectedCountryName] = useState<string>("");
+  const [firstname, setFirstname] = useState<string>('');
+  const [lastname, setLastname] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [selectedCountryName, setSelectedCountryName] = useState<string>('');
   const [countries, setCountries] = useState<Country[]>([]);
-  const [city, setCity] = useState<string>("");
-  const [zipcode, setZipcode] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [age, setAge] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
+  const [city, setCity] = useState<string>('');
+  const [zipcode, setZipcode] = useState<string>('');
+  const [street, setStreet] = useState<string>('');
+  const [age, setAge] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
 
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
@@ -46,34 +46,36 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    
 
     try {
-      const getCountryObejct = countries.find(
-        (c) => c.country === selectedCountryName
-      );
+      // const getCountryObejct = countries.find(
+      //   (c) => c.country === selectedCountryName
+      // );
 
-      if (!getCountryObejct) {
-        snackbarStore.setSnackbar(true, "No country found", "error");
-      } else {
+      // if (!getCountryObejct) {
+      //   snackbarStore.setSnackbar(true, 'No country found', 'error');
+      // } else {
         const response = await axios.post(signup, {
-          email: email,
-          password: password,
+          email: data.get('email'),
+          password: data.get('password'),
           age: age,
           gender: gender,
           firstName: firstname,
           lastName: lastname,
-          locationId: getCountryObejct.locationId,
+          locationId: 1,
           city: city,
           zipcode: zipcode,
           street: street,
         });
-        response.data
-        snackbarStore.setSnackbar(true, "You are signed up", "success");
-        navigate("/signin");
-      }
+        response.data;
+        snackbarStore.setSnackbar(true, 'You are signed up', 'success');
+        navigate('/signin');
+      // }
     } catch (error) {
-      error
-      snackbarStore.setSnackbar(true, "Invalid input try again", "error");
+      error;
+      snackbarStore.setSnackbar(true, 'Invalid input try again', 'error');
     }
   };
 
@@ -97,7 +99,7 @@ export default function SignUp() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Typography component="h1" variant="h5" marginBottom={"10px"}>
+            <Typography component="h1" variant="h5" marginBottom={'10px'}>
               Sign up
             </Typography>
             <Grid container spacing={2}>
@@ -151,7 +153,7 @@ export default function SignUp() {
                 item
                 xs={12}
                 sm={6}
-                style={{ marginBottom: "40px", width: "600px" }}
+                style={{ marginBottom: '40px', width: '600px' }}
               >
                 <StyledInputField
                   error={!validator.isStrongPassword(password)}
@@ -208,15 +210,14 @@ export default function SignUp() {
                   <Select
                     error={validator.isEmpty(selectedCountryName)}
                     value={selectedCountryName}
-                    required
                     fullWidth
                     name="country"
                     id="country"
                     label="Select a country"
                     autoFocus
                     sx={{
-                      "& fieldset": {
-                        borderColor: "green",
+                      '& fieldset': {
+                        borderColor: 'green',
                       },
                     }}
                     onChange={(e) => {
@@ -298,9 +299,9 @@ export default function SignUp() {
                   variant="contained"
                   sx={{
                     mt: 1,
-                    backgroundColor: "#27963C",
-                    "&:hover": {
-                      backgroundColor: "green",
+                    backgroundColor: '#27963C',
+                    '&:hover': {
+                      backgroundColor: 'green',
                     },
                   }}
                 >
@@ -332,8 +333,8 @@ const StyledBox = styled(Box)`
 const StyledButton = styled(Button)`
   margin-top: 9%;
   color: black;
-  background-color: transparent; 
-  &:hover { 
-    background-color: red; 
-  } 
+  background-color: transparent;
+  &:hover {
+    background-color: red;
+  }
 `;
