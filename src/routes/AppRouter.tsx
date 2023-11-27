@@ -7,6 +7,7 @@ import SignUp from '../ui/pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Home from '../ui/pages/Home';
 import Profile from '../ui/pages/Profile';
+import Swipe from '../ui/pages/Swipe';
 
 function AppRouter() {
 
@@ -20,6 +21,7 @@ function AppRouter() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/swipe" element={<Swipe />} />
           <Route element={<ProtectedRoute redirectPath="signin" />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
