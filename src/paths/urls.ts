@@ -7,3 +7,4 @@ export const checkAuthPath = `${base}checkauth`;
 export const getName = `${base}names/parent/${id}`;
 export const logout = `${base}logout`;
 export const login = `${base}login`;
+export const getNames = `${base}names`;

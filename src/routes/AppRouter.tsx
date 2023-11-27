@@ -22,6 +22,8 @@ function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/swipe" element={<Swipe />} />
+          {/* // TODO: Change route to the read more page when implemented */}
+          <Route path="/swipe/:name" element={<Swipe />} />
           <Route element={<ProtectedRoute redirectPath="signin" />}>
             <Route path="/profile" element={<Profile />} />
           </Route>

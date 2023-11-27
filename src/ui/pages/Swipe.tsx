@@ -7,10 +7,12 @@ import NameSuggest from '../components/NameSuggest';
 import axios from 'axios';
 import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
+import { useParams } from 'react-router-dom';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const { name: routeName } = useParams<{ name: string }>();
 
     useEffect(() => {
         const fetchName = async () => {
@@ -23,6 +25,11 @@ const Swipe = () => {
         };
         fetchName();
     }, []);
+
+    useEffect(() => {
+        const index = names.findIndex((name) => name.nameSuggestName === routeName);
+        setCurrentIndex(index >= 0 ? index : 0);
+    }, [routeName, names]);
 
     const handleThumbClick = (type: string) => {
         const newRandomIndex = Math.floor(Math.random() * names.length);
@@ -41,6 +48,7 @@ const Swipe = () => {
                     gender={names[currentIndex]?.gender || 'unisex'}
                 >
                     <NameSuggest name={names[currentIndex]} />
+
                     <StyledButtonBox>
                         <StyledButton onClick={() => handleThumbClick('down')}
                             buttonAction={'down'}
@@ -88,7 +96,7 @@ const StyledBox = styled(Box) <StyledBoxProps>`
                 return '#FFCA80';
         }
     }};
-    `
+    `;
 
 const StyledButtonBox = styled(Box)`
     margin-top: 2;
@@ -97,7 +105,7 @@ const StyledButtonBox = styled(Box)`
     width: 65%;
     margin-left: auto;
     margin-right: auto;
-    `
+    `;
 
 const StyledButton = styled(Button) <StyledButtonProps>`
     color: ${({ buttonAction }) => buttonAction === 'up' ? 'green' : 'red'};
@@ -105,4 +113,4 @@ const StyledButton = styled(Button) <StyledButtonProps>`
         background-color: transparent;
     };
     border-radius: 50%;
-    `
+    `;
