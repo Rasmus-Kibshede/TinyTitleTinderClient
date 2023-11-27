@@ -17,19 +17,20 @@ import { Country } from "../../types/country";
 import { signup, locations } from "../../paths/urls";
 import { useSnackbarDisplay } from "../../store/snackbarDisplay";
 import styled from "@emotion/styled";
-import { StyledInputField } from "../reusables/SignupStyling";
-import { Parent } from "../../types/parent";
-import { Address } from "../../types/address";
-import { User } from "../../types/user";
-import { Password } from "@mui/icons-material";
+import { StyledInputField } from "../reusables/ReusablesStyling";
 
 export default function SignUp() {
-  const [parent, setParent] = useState<Parent>();
-  const [user, setUser] = useState<User>();
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [selectedCountryName, setSelectedCountryName] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
-  const [address, setAddress] = useState<Address>();
-
+  const [city, setCity] = useState<string>("");
+  const [zipcode, setZipcode] = useState<string>("");
+  const [street, setStreet] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
 
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
@@ -55,16 +56,16 @@ export default function SignUp() {
         snackbarStore.setSnackbar(true, "No country found", "error");
       } else {
         const response = await axios.post(signup, {
-          email: user?.email,
-          password: user?.password, 
-          age: parent?.age,
-          gender: parent?.gender,
-          firstName: parent?.fistName,
-          lastName: parent?.lastName,
+          email: email,
+          password: password,
+          age: age,
+          gender: gender,
+          firstName: firstname,
+          lastName: lastname,
           locationId: getCountryObejct.locationId,
-          city: address?.city,
-          zipcode: address?.zipcode,
-          street: address?.street
+          city: city,
+          zipcode: zipcode,
+          street: street,
         });
         response.data
         snackbarStore.setSnackbar(true, "You are signed up", "success");
@@ -103,14 +104,16 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <StyledInputField
                   autoComplete="given-name"
-                  error={validateStringLength(, 2, 40)}
-                  value={parent}
+                  error={validateStringLength(firstname, 2, 40)}
+                  value={firstname}
                   required
                   fullWidth
+                  name="firstName"
+                  id="firstName"
                   label="First Name"
                   autoFocus
                   onChange={(e) => {
-                    setParent(e.target.value);
+                    setFirstname(e.target.value);
                   }}
                 />
               </Grid>
