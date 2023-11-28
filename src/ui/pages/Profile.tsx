@@ -18,17 +18,19 @@ function Profile() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-//DETTE VIRKER IKKE DA data.get('email') altid har en værdi, da den er sat som default value. 
-    if (data.get('email') || data.get('password')) {
+
+    if (user?.email != data.get('email')) {
       const updatedUser = await axios.put(updateUser, {
         email: user?.email,
         newEMail: data.get('email') ? data.get('email') : user?.email,
         newPassword: data.get('password')
       });
 
-
       if (updatedUser.data.success) {
         snackbarStore.setSnackbar(true, 'User updated', 'success');
+        //Hvorfor virker det ikke at sætte authUser her? 
+        userStore.setAuthUser(updatedUser.data.data)
+        navigate('/profile')
       } else {
         snackbarStore.setSnackbar(true, 'update incomplete', 'error');
       }
@@ -40,10 +42,14 @@ function Profile() {
       gender: data.get('gender') ? data.get('gender') : parent?.gender,
       firstName: data.get('firstName') ? data.get('firstName') : parent?.firstName,
       lastName: data.get('lastName') ? data.get('lastName') : parent?.lastName
-    })
+    });
+
     if (updatedParent.data.success) {
       snackbarStore.setSnackbar(true, 'Parent updated', 'success');
-      navigate('/swipe')
+      user?.parent === updatedParent.data.data
+      //Hvorfor virker det ikke at sætte authUser her? 
+      userStore.setAuthUser(user!)
+      navigate('/profile')
     } else {
       snackbarStore.setSnackbar(true, 'update incomplete', 'error');
     }
