@@ -8,11 +8,16 @@ import axios from 'axios';
 import { getName } from '../../paths/urls';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
+import { useAuthUserStore } from '../../store/user';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const { name: routeName } = useParams<{ name: string }>();
+    const userStore = useAuthUserStore();
+    const user = userStore.authUser;
+    console.log("🚀 ~ file: Swipe.tsx:19 ~ Swipe ~ user:", user?.parent.likedNames)
+    console.log("🚀 ~ file: Swipe.tsx:19 ~ Swipe ~ user:", user?.parent.dislikedNames)
 
     useEffect(() => {
         const fetchName = async () => {
