@@ -1,5 +1,4 @@
 import { Address } from "./address";
-import { Name } from "./name";
 import { User } from "./user";
 
 export interface Parent extends User {
@@ -9,6 +8,6 @@ export interface Parent extends User {
   gender: string;
   age: number;
   address: Address;
-  dislikedNames: Name[];
-  likedNames: Name[];
+  dislikedNames: number[];
+  likedNames: number[];
 }

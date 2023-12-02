@@ -1,23 +1,22 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { Name } from '../../types/name';
 import NameSuggest from '../components/NameSuggest';
 import axios from 'axios';
-import { getName } from '../../paths/urls';
+import { getName, updateTableNames } from '../../paths/urls';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-import { useAuthUserStore } from '../../store/user';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const { name: routeName } = useParams<{ name: string }>();
-    const userStore = useAuthUserStore();
-    const user = userStore.authUser;
-    console.log("🚀 ~ file: Swipe.tsx:19 ~ Swipe ~ user:", user?.parent.likedNames)
-    console.log("🚀 ~ file: Swipe.tsx:19 ~ Swipe ~ user:", user?.parent.dislikedNames)
+    const [likedNames, setLikedNames] = useState<number[]>([]);
+    const [dislikedNames, setDislikedNames] = useState<number[]>([]);
+    const [isMouseOver, setIsMouseOver] = useState(false);
 
     useEffect(() => {
         const fetchName = async () => {
@@ -31,19 +30,46 @@ const Swipe = () => {
         fetchName();
     }, []);
 
+    console.log('Sending request with data:', { likedNames, dislikedNames });
+
+    useEffect(() => {
+        if (!isMouseOver) {
+            axios
+                .put(updateTableNames, {
+                    likedNames,
+                    dislikedNames,
+                })
+                .catch((error) => {
+                    console.error('UseEffect Error updating liked/disliked names:', error);
+                });
+        }
+    }, [isMouseOver]);
+
     useEffect(() => {
         const index = names.findIndex((name) => name.nameSuggestName === routeName);
         setCurrentIndex(index >= 0 ? index : 0);
     }, [routeName, names]);
 
-    const handleThumbClick = (type: string) => {
+    const handleThumbClick = async (type: string) => {
+        const currentNameId = names[currentIndex].nameSuggestId;
+
+        if (!currentNameId) {
+            console.error('Name not found');
+            return;
+        }
+
+        try {
+            if (type === 'up') {
+                setLikedNames([...likedNames, currentNameId]);
+            } else if (type === 'down') {
+                setDislikedNames([...dislikedNames, currentNameId]);
+            }
+        } catch (error) {
+            console.error('Error updating liked/disliked names:', error);
+        }
+
         const newRandomIndex = Math.floor(Math.random() * names.length);
-
         setCurrentIndex(newRandomIndex);
-
-        console.log(`Thumb ${type} clicked`);
-
-        // TODO: Remove a liked / disliked name from the list and show a new one
     };
 
     return (
@@ -51,16 +77,20 @@ const Swipe = () => {
             <>
                 <StyledBox
                     gender={names[currentIndex]?.gender || 'unisex'}
+                    onMouseEnter={() => setIsMouseOver(true)}
+                    onMouseLeave={() => setIsMouseOver(false)}
                 >
                     <NameSuggest name={names[currentIndex]} />
 
                     <StyledButtonBox>
-                        <StyledButton onClick={() => handleThumbClick('down')}
+                        <StyledButton
+                            onClick={() => handleThumbClick('down')}
                             buttonAction={'down'}
                         >
                             <ThumbDownIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
-                        <StyledButton onClick={() => handleThumbClick('up')}
+                        <StyledButton
+                            onClick={() => handleThumbClick('up')}
                             buttonAction={'up'}
                         >
                             <ThumbUpIcon sx={{ fontSize: '100px' }} />
