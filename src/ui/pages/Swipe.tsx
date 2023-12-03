@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { Name } from '../../types/name';
@@ -13,10 +13,12 @@ import { useParams } from 'react-router-dom';
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    // TODO: Remove when read more modal is implemented
     const { name: routeName } = useParams<{ name: string }>();
     const [likedNames, setLikedNames] = useState<number[]>([]);
     const [dislikedNames, setDislikedNames] = useState<number[]>([]);
     const [isMouseOver, setIsMouseOver] = useState(false);
+    const [isReadMore, setIsReadMore] = useState(false);
 
     useEffect(() => {
         const fetchName = async () => {
@@ -30,8 +32,6 @@ const Swipe = () => {
         fetchName();
     }, []);
 
-    console.log('Sending request with data:', { likedNames, dislikedNames });
-
     useEffect(() => {
         if (!isMouseOver) {
             axios
@@ -39,8 +39,12 @@ const Swipe = () => {
                     likedNames,
                     dislikedNames,
                 })
+                .then(() => {
+                    setLikedNames([]);
+                    setDislikedNames([]);
+                })
                 .catch((error) => {
-                    console.error('UseEffect Error updating liked/disliked names:', error);
+                    console.error('Hook error updating liked/disliked names:', error);
                 });
         }
     }, [isMouseOver]);
@@ -68,19 +72,34 @@ const Swipe = () => {
             console.error('Error updating liked/disliked names:', error);
         }
 
-        const newRandomIndex = Math.floor(Math.random() * names.length);
+        const newNames = [...names];
+        newNames.splice(currentIndex, 1);
+        setNames(newNames);
+
+        const newRandomIndex = Math.floor(Math.random() * newNames.length);
         setCurrentIndex(newRandomIndex);
+
+        setIsReadMore(false);
+    };
+
+    const handleReadMoreClick = () => {
+        setIsReadMore(!isReadMore);
     };
 
     return (
-        names.length > 0 && (
-            <>
+        <>
+            {names.length > 0 ? (
                 <StyledBox
                     gender={names[currentIndex]?.gender || 'unisex'}
+                    height={isReadMore ? 850 : 551}
                     onMouseEnter={() => setIsMouseOver(true)}
                     onMouseLeave={() => setIsMouseOver(false)}
                 >
-                    <NameSuggest name={names[currentIndex]} />
+                    <NameSuggest name={names[currentIndex]} isReadMore={isReadMore} />
+
+                    <StyledReadMoreButton variant="contained" onClick={handleReadMoreClick}>
+                        {isReadMore ? 'Close' : 'Read More'}
+                    </StyledReadMoreButton>
 
                     <StyledButtonBox>
                         <StyledButton
@@ -96,9 +115,20 @@ const Swipe = () => {
                             <ThumbUpIcon sx={{ fontSize: '100px' }} />
                         </StyledButton>
                     </StyledButtonBox>
+
+
                 </StyledBox>
-            </>
-        )
+            ) : (
+                <StyledBox gender='unisex'
+                    height={551}
+                    onMouseEnter={() => setIsMouseOver(true)}
+                    onMouseLeave={() => setIsMouseOver(false)}>
+                    <Typography variant="h4">
+                        You've seen all names!
+                    </Typography>
+                </StyledBox>
+            )}
+        </>
     );
 };
 
@@ -106,6 +136,7 @@ export default Swipe;
 
 interface StyledBoxProps {
     gender: string;
+    height: number;
 }
 
 interface StyledButtonProps {
@@ -113,7 +144,7 @@ interface StyledButtonProps {
 }
 
 const StyledBox = styled(Box) <StyledBoxProps>`
-    height: 551px;
+    height: ${({ height }) => `${height}px`};
     width: 900px;
     border-radius: 56px;
     margin: auto;
@@ -149,3 +180,13 @@ const StyledButton = styled(Button) <StyledButtonProps>`
     };
     border-radius: 50%;
     `;
+
+const StyledReadMoreButton = styled(Button)`
+    background-color: white;
+    color: black;
+    width: 300px;
+    box-shadow: 0px 3px 6px rgba(0, 3, 1, 0.50);
+    &:hover {
+        background-color: #f2f2f2;
+    }
+`;

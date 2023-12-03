@@ -31,6 +31,13 @@ const THEME = createTheme({
       'color': '#FFFFFF',
       'marginBottom': '50px'
     },
+    h1: {
+      'fontFamily': `"Josefin sans", sans-serif`,
+      'fontSize': '20px',
+      'fontWeight': '500',
+      'color': '#FFFFFF',
+      'marginBottom': '50px'
+    },
     h4: {
       'fontFamily': `"Advent Pro", sans-serif`,
       'fontSize': '60px',
