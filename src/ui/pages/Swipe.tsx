@@ -91,7 +91,6 @@ const Swipe = () => {
             {names.length > 0 ? (
                 <StyledBox
                     gender={names[currentIndex]?.gender || 'unisex'}
-                    height={isReadMore ? 850 : 551}
                     onMouseEnter={() => setIsMouseOver(true)}
                     onMouseLeave={() => setIsMouseOver(false)}
                 >
@@ -119,8 +118,8 @@ const Swipe = () => {
 
                 </StyledBox>
             ) : (
-                <StyledBox gender='unisex'
-                    height={551}
+                <StyledBox
+                    gender='unisex'
                     onMouseEnter={() => setIsMouseOver(true)}
                     onMouseLeave={() => setIsMouseOver(false)}>
                     <Typography variant="h4">
@@ -136,7 +135,6 @@ export default Swipe;
 
 interface StyledBoxProps {
     gender: string;
-    height: number;
 }
 
 interface StyledButtonProps {
@@ -144,7 +142,7 @@ interface StyledButtonProps {
 }
 
 const StyledBox = styled(Box) <StyledBoxProps>`
-    height: ${({ height }) => `${height}px`};
+    height: fit-content;
     width: 900px;
     border-radius: 56px;
     margin: auto;
