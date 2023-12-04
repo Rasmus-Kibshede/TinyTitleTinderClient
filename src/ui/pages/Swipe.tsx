@@ -77,7 +77,7 @@ interface StyledButtonProps {
     buttonAction: string;
 }
 
-export const StyledBox = styled(Box) <StyledBoxProps>`
+const StyledBox = styled(Box) <StyledBoxProps>`
     height: 551px;
     width: 900px;
     border-radius: 56px;
