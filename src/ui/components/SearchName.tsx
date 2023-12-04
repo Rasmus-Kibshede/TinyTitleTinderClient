@@ -1,21 +1,22 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { getNames } from '../../paths/urls';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Name } from '../../types/name';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import SearchNameModal from './SearchNameModal';
+import { getNames } from '../../paths/urls';
 
 export default function SearchName() {
     const [names, setNames] = useState<Name[]>([]);
-    const navigate = useNavigate();
+    const [selectedName, setSelectedName] = useState<Name | null>(null);
+    const [openModal, setOpenModal] = useState(false);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        const fetchName = async () => {
+        const fetchNames = async () => {
             try {
                 const response = await axios.get(getNames);
                 setNames(response.data.data);
@@ -23,15 +24,23 @@ export default function SearchName() {
                 console.error('Error fetching data:', error);
             }
         };
-        fetchName();
+        fetchNames();
     }, []);
 
-    const handleOnChange = (_: React.ChangeEvent<object>, value: string | null) => {
+    const handleOnChange = (_: SyntheticEvent, value: string | null) => {
         if (value) {
-            navigate(`/swipe/${value}`);
-            setOpen(false);
+            const selected = names.find((name) => name.nameSuggestName === value);
+
+            if (selected) {
+                setSelectedName(selected);
+                setOpenModal(true);
+                setOpen(false);
+            }
         }
     };
+
+    console.log("Selected name:", selectedName?.nameSuggestName);
+
 
     return (
         <>
@@ -43,21 +52,32 @@ export default function SearchName() {
                     onChange={handleOnChange}
                     open={open}
                     onInputChange={(_, value) => setOpen(!!value)}
-                    popupIcon={null}
                     options={names.map((option) => option.nameSuggestName)}
+                    value={selectedName?.nameSuggestName || ''}
                     sx={{ width: 220, backgroundColor: 'transparent' }}
-                    renderInput={(params) =>
-                        <StyledTextField {...params}
+                    popupIcon={null}
+                    getOptionLabel={(option) => option}
+                    renderInput={(params) => (
+                        <StyledTextField
+                            {...params}
                             label='Search name'
                             variant='standard'
                         />
-                    }
+                    )}
                 />
             </Box>
+            <SearchNameModal
+                open={openModal}
+                onClose={() => {
+                    setOpenModal(false);
+                    setSelectedName((prev) => prev ? { ...prev, nameSuggestName: '' } : null);
+                }}
+                selectedName={selectedName as Name}
+            />
+
         </>
     );
 }
-
 const StyledTextField = styled(TextField)`
     & label.Mui-focused {
         color: black;

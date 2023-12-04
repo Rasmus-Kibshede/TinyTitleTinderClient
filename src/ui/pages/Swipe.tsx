@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
@@ -8,13 +8,12 @@ import NameSuggest from '../components/NameSuggest';
 import axios from 'axios';
 import { getName, updateTableNames } from '../../paths/urls';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { StyledBox } from '../reusables/Boxes';
+import SearchNameModal from '../components/SearchNameModal';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    // TODO: Remove when read more modal is implemented
-    const { name: routeName } = useParams<{ name: string }>();
     const [likedNames, setLikedNames] = useState<number[]>([]);
     const [dislikedNames, setDislikedNames] = useState<number[]>([]);
     const [isMouseOver, setIsMouseOver] = useState(false);
@@ -49,11 +48,6 @@ const Swipe = () => {
         }
     }, [isMouseOver]);
 
-    useEffect(() => {
-        const index = names.findIndex((name) => name.nameSuggestName === routeName);
-        setCurrentIndex(index >= 0 ? index : 0);
-    }, [routeName, names]);
-
     const handleThumbClick = async (type: string) => {
         const currentNameId = names[currentIndex].nameSuggestId;
 
@@ -82,10 +76,6 @@ const Swipe = () => {
         setIsReadMore(false);
     };
 
-    const handleReadMoreClick = () => {
-        setIsReadMore(!isReadMore);
-    };
-
     return (
         <>
             {names.length > 0 ? (
@@ -94,73 +84,53 @@ const Swipe = () => {
                     onMouseEnter={() => setIsMouseOver(true)}
                     onMouseLeave={() => setIsMouseOver(false)}
                 >
-                    <NameSuggest name={names[currentIndex]} isReadMore={isReadMore} />
+                    <NameSuggest name={names[currentIndex]} isReadMore={false} />
 
-                    <StyledReadMoreButton variant="contained" onClick={handleReadMoreClick}>
-                        {isReadMore ? 'Close' : 'Read More'}
+                    <StyledReadMoreButton variant="contained" onClick={() => setIsReadMore(true)}>
+                        Read more
                     </StyledReadMoreButton>
 
-                    <StyledButtonBox>
-                        <StyledButton
-                            onClick={() => handleThumbClick('down')}
-                            buttonAction={'down'}
-                        >
-                            <ThumbDownIcon sx={{ fontSize: '100px' }} />
-                        </StyledButton>
-                        <StyledButton
-                            onClick={() => handleThumbClick('up')}
-                            buttonAction={'up'}
-                        >
-                            <ThumbUpIcon sx={{ fontSize: '100px' }} />
-                        </StyledButton>
-                    </StyledButtonBox>
-
-
+                    <>
+                        <StyledButtonBox>
+                            <StyledButton
+                                onClick={() => handleThumbClick('down')}
+                                buttonAction={'down'}
+                            >
+                                <ThumbDownIcon sx={{ fontSize: '100px' }} />
+                            </StyledButton>
+                            <StyledButton
+                                onClick={() => handleThumbClick('up')}
+                                buttonAction={'up'}
+                            >
+                                <ThumbUpIcon sx={{ fontSize: '100px' }} />
+                            </StyledButton>
+                        </StyledButtonBox>
+                    </>
                 </StyledBox>
             ) : (
                 <StyledBox
                     gender='unisex'
                     onMouseEnter={() => setIsMouseOver(true)}
-                    onMouseLeave={() => setIsMouseOver(false)}>
-                    <Typography variant="h4">
-                        You've seen all names!
-                    </Typography>
+                    onMouseLeave={() => setIsMouseOver(false)}
+                >
+                    <Typography variant="h4">You've seen all names!</Typography>
                 </StyledBox>
             )}
+
+            <SearchNameModal
+                open={isReadMore}
+                onClose={() => setIsReadMore(false)}
+                selectedName={names[currentIndex]}
+            />
         </>
     );
 };
 
 export default Swipe;
 
-interface StyledBoxProps {
-    gender: string;
-}
-
 interface StyledButtonProps {
     buttonAction: string;
 }
-
-const StyledBox = styled(Box) <StyledBoxProps>`
-    height: fit-content;
-    width: 900px;
-    border-radius: 56px;
-    margin: auto;
-    text-align: center;
-    padding: 4;
-    border: 3px solid #CBCBCB;
-    margin-top: 5%;
-    background-color: ${({ gender }) => {
-        switch (gender.toLowerCase()) {
-            case 'female':
-                return '#FFDBDB';
-            case 'male':
-                return '#B6EEFF';
-            default:
-                return '#FFCA80';
-        }
-    }};
-    `;
 
 const StyledButtonBox = styled(Box)`
     margin-top: 2;
@@ -169,15 +139,15 @@ const StyledButtonBox = styled(Box)`
     width: 65%;
     margin-left: auto;
     margin-right: auto;
-    `;
+`;
 
 const StyledButton = styled(Button) <StyledButtonProps>`
-    color: ${({ buttonAction }) => buttonAction === 'up' ? 'green' : 'red'};
+    color: ${({ buttonAction }) => (buttonAction === 'up' ? 'green' : 'red')};
     &:hover {
         background-color: transparent;
-    };
+    }
     border-radius: 50%;
-    `;
+`;
 
 const StyledReadMoreButton = styled(Button)`
     background-color: white;
