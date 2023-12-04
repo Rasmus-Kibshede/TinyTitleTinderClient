@@ -22,7 +22,7 @@ function Profile() {
     if (user?.email != data.get('email')) {
       const updatedUser = await axios.put(updateUser, {
         email: user?.email,
-        newEMail: data.get('email') ? data.get('email') : user?.email,
+        newEmail: data.get('email') ? data.get('email') : user?.email,
         newPassword: data.get('password')
       });
 
