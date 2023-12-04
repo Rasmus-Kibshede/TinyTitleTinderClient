@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Name } from '../../types/name';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
@@ -27,7 +27,7 @@ export default function SearchName() {
         fetchNames();
     }, []);
 
-    const handleOnChange = (_: SyntheticEvent, value: string | null) => {
+    const handleOnChange = (_: React.ChangeEvent<object>, value: string | null) => {
         if (value) {
             const selected = names.find((name) => name.nameSuggestName === value);
 
