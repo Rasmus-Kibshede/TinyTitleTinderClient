@@ -20,8 +20,8 @@ import styled from '@emotion/styled';
 import { StyledInputField } from '../reusables/ReusablesStyling';
 
 export default function SignUp() {
-  const [firstname, setFirstname] = useState<string>('');
-  const [lastname, setLastname] = useState<string>('');
+  const [isValidFirstname, setIsValidFirstname] = useState<boolean>(false);
+  const [isValidLastname, setIsValidLastname] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [selectedCountryName, setSelectedCountryName] = useState<string>('');
@@ -47,32 +47,31 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
 
     try {
-      // const getCountryObejct = countries.find(
-      //   (c) => c.country === selectedCountryName
-      // );
+       const getCountryObejct = countries.find(
+         (c) => c.country === selectedCountryName
+        );
 
-      // if (!getCountryObejct) {
-      //   snackbarStore.setSnackbar(true, 'No country found', 'error');
-      // } else {
-        const response = await axios.post(signup, {
-          email: data.get('email'),
-          password: data.get('password'),
-          age: age,
-          gender: gender,
-          firstName: firstname,
-          lastName: lastname,
-          locationId: 1,
-          city: city,
-          zipcode: zipcode,
-          street: street,
-        });
-        response.data;
-        snackbarStore.setSnackbar(true, 'You are signed up', 'success');
-        navigate('/signin');
-      // }
+      if (!getCountryObejct) {
+         snackbarStore.setSnackbar(true, 'No country found', 'error');
+       } else {
+      const response = await axios.post(signup, {
+        email: data.get('email'),
+        password: data.get('password'),
+        age: data.get('age'),
+        gender: data.get('gender'),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        locationId: 1,
+        city: data.get('city'),
+        zipcode: data.get('zipcode'),
+        street: data.get('street'),
+      });
+      response.data;
+      snackbarStore.setSnackbar(true, 'You are signed up', 'success');
+      navigate('/signin');
+    }
     } catch (error) {
       error;
       snackbarStore.setSnackbar(true, 'Invalid input try again', 'error');
@@ -80,6 +79,7 @@ export default function SignUp() {
   };
 
   const validateStringLength = (value: string, min: number, max: number) => {
+    
     return !(
       validator.isAlpha(value) &&
       validator.isLength(value, {
@@ -97,17 +97,30 @@ export default function SignUp() {
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
           >
-            <Typography component="h1" variant="h5" marginBottom={'10px'}>
+            <Typography
+            fontSize={48}
+            fontFamily={"Josefin Sans"}
+            color={"#27963C"}
+            letterSpacing={"0.4px"}
+            fontWeight={"regular"}
+            textAlign={"center"}
+            >
+              TinyTitleTinder
+            </Typography>
+            <Typography 
+              component="h1" 
+              variant="h5" 
+              marginBottom={'10px'} 
+              fontFamily={"Josefin Sans"}>
               Sign up
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <StyledInputField
                   autoComplete="given-name"
-                  error={validateStringLength(firstname, 2, 40)}
-                  value={firstname}
+                  error={isValidFirstname}
+                  helperText={isValidFirstname && 'Invalid firstname'}
                   required
                   fullWidth
                   name="firstName"
@@ -115,14 +128,14 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                   onChange={(e) => {
-                    setFirstname(e.target.value);
+                    setIsValidFirstname(validateStringLength(e.target.value, 2, 40));
                   }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <StyledInputField
-                  error={validateStringLength(lastname, 2, 40)}
-                  value={lastname}
+                  error={isValidLastname}
+                  helperText={isValidLastname && 'Invalid lastname'}
                   required
                   fullWidth
                   id="lastName"
@@ -130,7 +143,7 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                   onChange={(e) => {
-                    setLastname(e.target.value);
+                    setIsValidLastname(validateStringLength(e.target.value, 2, 40));
                   }}
                 />
               </Grid>
