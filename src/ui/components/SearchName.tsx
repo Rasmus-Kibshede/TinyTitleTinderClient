@@ -39,9 +39,6 @@ export default function SearchName() {
         }
     };
 
-    console.log("Selected name:", selectedName?.nameSuggestName);
-
-
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
