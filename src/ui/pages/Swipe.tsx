@@ -10,6 +10,7 @@ import { getName, updateTableNames } from '../../paths/urls';
 import styled from '@emotion/styled';
 import { StyledBox } from '../reusables/Boxes';
 import SearchNameModal from '../components/SearchNameModal';
+import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
@@ -18,6 +19,7 @@ const Swipe = () => {
     const [dislikedNames, setDislikedNames] = useState<number[]>([]);
     const [isMouseOver, setIsMouseOver] = useState(false);
     const [isReadMore, setIsReadMore] = useState(false);
+    const snackbarStore = useSnackbarDisplay();
 
     useEffect(() => {
         const fetchName = async () => {
@@ -25,7 +27,7 @@ const Swipe = () => {
                 const response = await axios.get(getName);
                 setNames(response.data.data);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
             }
         };
         fetchName();
@@ -42,8 +44,8 @@ const Swipe = () => {
                     setLikedNames([]);
                     setDislikedNames([]);
                 })
-                .catch((error) => {
-                    console.error('Hook error updating liked/disliked names:', error);
+                .catch(() => {
+                    snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
                 });
         }
     }, [isMouseOver]);
@@ -52,8 +54,7 @@ const Swipe = () => {
         const currentNameId = names[currentIndex].nameSuggestId;
 
         if (!currentNameId) {
-            console.error('Name not found');
-            return;
+            return snackbarStore.setSnackbar(true, 'Error: Name not found', 'error');
         }
 
         try {
@@ -63,7 +64,7 @@ const Swipe = () => {
                 setDislikedNames([...dislikedNames, currentNameId]);
             }
         } catch (error) {
-            console.error('Error updating liked/disliked names:', error);
+            snackbarStore.setSnackbar(true, 'Error updating liked/disliked names', 'error');
         }
 
         const newNames = [...names];
