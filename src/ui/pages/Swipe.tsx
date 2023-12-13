@@ -149,7 +149,7 @@ const StyledButtonBox = styled(Box)`
 `;
 
 const StyledButton = styled(Button) <StyledButtonProps>`
-    color: ${({ buttonAction }) => (buttonAction === 'up' ? 'green' : 'red')};
+    color: ${({ buttonaction }) => (buttonaction === 'up' ? 'green' : 'red')};
     &:hover {
         background-color: transparent;
     }
