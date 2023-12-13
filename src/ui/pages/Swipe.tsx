@@ -12,6 +12,7 @@ import { StyledBox } from '../reusables/Boxes';
 import SearchNameModal from '../components/SearchNameModal';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 import { useAuthUserStore } from '../../store/user';
+
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -20,23 +21,28 @@ const Swipe = () => {
     const [isMouseOver, setIsMouseOver] = useState(false);
     const [isReadMore, setIsReadMore] = useState(false);
     const snackbarStore = useSnackbarDisplay();
+    const userStore = useAuthUserStore();
 
     useEffect(() => {
         const fetchName = async () => {
             try {
-                const response = await axios.get(getName);
+                const response = await axios.get(`${getName}${userStore.authUser?.parent.parentId}`);
                 setNames(response.data.data);
             } catch (error) {
-                snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
+                snackbarStore.setSnackbar(true, 'Server1 problems, please try again later', 'error');
             }
         };
         fetchName();
     }, []);
 
     useEffect(() => {
-        if (!isMouseOver) {
+        if (!isMouseOver && likedNames.length > 0 && dislikedNames.length > 0) {
+
+            if (!userStore.authUser?.parent.parentId) {
+                return snackbarStore.setSnackbar(true, 'Error: User not found', 'error');
+            }
             axios
-                .put(updateTableNames(userStore.authUser?.id), {
+                .put(updateTableNames(userStore.authUser?.parent.parentId), {
                     likedNames,
                     dislikedNames,
                 })
@@ -45,7 +51,7 @@ const Swipe = () => {
                     setDislikedNames([]);
                 })
                 .catch(() => {
-                    snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
+                    snackbarStore.setSnackbar(true, 'Server2 problems, please try again later', 'error');
                 });
         }
     }, [isMouseOver]);
@@ -75,14 +81,8 @@ const Swipe = () => {
         setCurrentIndex(newRandomIndex);
 
         setIsReadMore(false);
-
-  const userStore = useAuthUserStore();
-
-  useEffect(() => {
-    const fetchName = async () => {
-      try {
-        const response = await axios.get(`${getName}${userStore.authUser?.parent.parentId}`);
-
+    }
+    
     return (
         <>
             {names.length > 0 ? (
@@ -132,6 +132,7 @@ const Swipe = () => {
         </>
     );
 };
+
 
 export default Swipe;
 

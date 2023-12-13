@@ -2,7 +2,6 @@ import { Box, TextField } from '@mui/material'
 import { useState } from 'react';
 import { useAuthUserStore } from '../../store/user';
 import { User } from '../../types/user';
-import { Address } from '../../types/address';
 
 function Profile() {
   const userStore = useAuthUserStore();

@@ -6,7 +6,7 @@ interface StyledBoxProps {
 }
 
 export const StyledBox = styled(Box) <StyledBoxProps>`
-    height: fit-content;
+    height: 550px;
     width: 900px;
     border-radius: 56px;
     margin: auto;

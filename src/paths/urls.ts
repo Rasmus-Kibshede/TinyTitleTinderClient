@@ -1,6 +1,3 @@
-import { useAuthUserStore } from "../store/user";
-
-const id = useAuthUserStore.getState().authUser?.parent.parentId;
 const base = 'http://localhost:3000/';
 
 export const getNames = `${base}names`;
