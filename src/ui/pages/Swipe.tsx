@@ -136,7 +136,7 @@ const Swipe = () => {
 export default Swipe;
 
 interface StyledButtonProps {
-    buttonAction: string;
+    buttonaction: string;
 }
 
 const StyledButtonBox = styled(Box)`
