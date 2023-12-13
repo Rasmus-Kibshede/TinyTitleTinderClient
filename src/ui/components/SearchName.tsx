@@ -50,7 +50,7 @@ export default function SearchName() {
                     open={open}
                     onInputChange={(_, value) => setOpen(!!value)}
                     options={names.map((option) => option.nameSuggestName)}
-                    value={selectedName?.nameSuggestName || ''}
+                    value={selectedName?.nameSuggestName || null}
                     sx={{ width: 220, backgroundColor: 'transparent' }}
                     popupIcon={null}
                     getOptionLabel={(option) => option}
