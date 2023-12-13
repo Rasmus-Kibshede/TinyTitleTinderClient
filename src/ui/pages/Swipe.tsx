@@ -11,7 +11,7 @@ import styled from '@emotion/styled';
 import { StyledBox } from '../reusables/Boxes';
 import SearchNameModal from '../components/SearchNameModal';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
-
+import { useAuthUserStore } from '../../store/user';
 const Swipe = () => {
     const [names, setNames] = useState<Name[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
