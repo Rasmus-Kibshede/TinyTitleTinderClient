@@ -101,7 +101,7 @@ const Swipe = () => {
                         <StyledButtonBox>
                             <StyledButton
                                 onClick={() => handleThumbClick('down')}
-                                buttonAction={'down'}
+                                buttonaction={'down'}
                             >
                                 <ThumbDownIcon sx={{ fontSize: '100px' }} />
                             </StyledButton>
