@@ -1,6 +1,6 @@
-import { useAuthUserStore } from "../store/user";
+// import { useAuthUserStore } from "../store/user";
 
-const id = useAuthUserStore.getState().authUser?.parent.parentId;
+const id = 1;
 const base = 'http://localhost:3000/';
 
 export const checkAuthPath = `${base}checkauth`;
