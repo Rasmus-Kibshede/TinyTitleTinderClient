@@ -36,7 +36,7 @@ const Swipe = () => {
     useEffect(() => {
         if (!isMouseOver) {
             axios
-                .put(updateTableNames, {
+                .put(updateTableNames(userStore.authUser?.id), {
                     likedNames,
                     dislikedNames,
                 })
