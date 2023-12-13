@@ -75,7 +75,13 @@ const Swipe = () => {
         setCurrentIndex(newRandomIndex);
 
         setIsReadMore(false);
-    };
+
+  const userStore = useAuthUserStore();
+
+  useEffect(() => {
+    const fetchName = async () => {
+      try {
+        const response = await axios.get(`${getName}${userStore.authUser?.parent.parentId}`);
 
     return (
         <>
