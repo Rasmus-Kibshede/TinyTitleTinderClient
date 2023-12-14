@@ -9,4 +9,4 @@ export const logout = `${base}logout`;
 export const login = `${base}login`;
 export const getNames = `${base}names`;
 export const updateUser = `${base}user`;
-export const updateParent = `${base}parents`;
+export const updateParentURL = `${base}parents`;

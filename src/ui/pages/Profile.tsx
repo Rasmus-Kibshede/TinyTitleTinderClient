@@ -1,107 +1,97 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { Box, Button, FormControl, Grid } from '@mui/material';
+import { AlertColor, Box, Button, FormControl, Grid } from '@mui/material';
 import { useAuthUserStore } from '../../store/user';
 import { StyledInputField } from '../resuables/ReusablesStyling';
 import { updateUser } from '../../paths/urls';
-import { updateParent } from '../../paths/urls';
+import { updateParentURL } from '../../paths/urls';
 import axios from 'axios';
 import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 import { User } from '../../types/user';
-import { useEffect } from 'react';
 import { Parent } from '../../types/parent';
-// import { Parent } from '../../types/parent';
-// import { useEffect } from 'react';
 
 function Profile() {
   const userStore = useAuthUserStore();
-  const user = userStore.authUser;
+  const authUser = userStore.authUser;
   const parent = userStore.authUser?.parent;
-
-  useEffect(() => {
-    console.log('user', userStore.authUser);
-  }, [userStore.authUser]);
-
-  // console.log(userStore.authUser);
-
   const snackbarStore = useSnackbarDisplay();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    
+    const formData = new FormData(event.currentTarget);
+    let userPlaceholder: User | null = null;
 
-    let newUser: User | null = null;
+    await axios
+      .put(updateUser, {
+        email: authUser?.email,
+        newEmail: formData.get('email') ? formData.get('email') : authUser?.email,
+        newPassword: formData.get('password'),
+      })
+      .then((res) => {
+        console.log(res);
+        handleSnackbarMessage('User updated', 'success');
 
-    // if (user?.email != data.get('email')) {
-    const updatedUser = await axios.put(updateUser, {
-      email: user?.email,
-      newEmail: data.get('email') ? data.get('email') : user?.email,
-      newPassword: data.get('password'),
-    });
+        if (res.data.success) {
+          userPlaceholder = {
+            ...res.data.data,
+            parent: parent,
+          };
 
-    if (updatedUser.data.success) {
-      newUser = {
-        ...updatedUser.data.data,
-        parent: parent,
-      };
-      snackbarStore.setSnackbar(true, 'User updated', 'success');
-      //Hvorfor virker det ikke at sætte authUser her?
-      // userStore.setAuthUser(updatedUser.data.data);
-      newUser && userStore.setAuthUser(newUser);
-    } else {
-      snackbarStore.setSnackbar(true, 'update incomplete', 'error');
-    }
-    // }
+          updateParent(formData, userPlaceholder!);
+        } else {
+          handleSnackbarMessage('User not updated', 'error');
+        }
+      })
+      .catch((err) => {
+        handleSnackbarMessage(err.response.data.message, 'error');
+      });
+  };
 
-    // address: {
-    //   street: data.get('street')
-    //     ? data.get('street')
-    //     : parent?.address.street,
-    //   city: data.get('city') ? data.get('city') : parent?.address.city,
-    //   zipcode: data.get('zipcode')
-    //     ? data.get('zipcode')
-    //     : parent?.address.zipcode,
-    //   location: {
-    //     country: data.get('country')
-    //       ? data.get('country')
-    //       : parent?.address.location.country,
-    //   },
-    // },
+  const updateParent = async (data: FormData, newUser: User) => {
+    await axios
+      .put(updateParentURL, {
+        parentId: parent?.parentId,
+        age: data.get('age') ? data.get('age') : parent?.age,
+        gender: data.get('gender') ? data.get('gender') : parent?.gender,
+        firstName: data.get('firstName')
+          ? data.get('firstName')
+          : parent?.firstName,
+        lastName: data.get('lastName')
+          ? data.get('lastName')
+          : parent?.lastName,
+      })
+      .then((res) => {
+        handleSnackbarMessage('User updated', 'success');
 
-    const updatedParent = await axios.put(updateParent, {
-      parentId: parent?.parentId,
-      age: data.get('age') ? data.get('age') : parent?.age,
-      gender: data.get('gender') ? data.get('gender') : parent?.gender,
-      firstName: data.get('firstName')
-        ? data.get('firstName')
-        : parent?.firstName,
-      lastName: data.get('lastName') ? data.get('lastName') : parent?.lastName,
-    });
+        if (res.data.success) {
+          const updatedP: Parent = res.data.data;
+          updatedP.address = {
+            addressId: parent?.address.addressId!,
+            street: parent?.address.street!,
+            city: parent?.address.city!,
+            zipcode: parent?.address.zipcode!,
+            location: {
+              country: parent?.address.location.country!,
+              locationId: parent?.address.location.locationId!,
+            },
+          };
 
-    if (updatedParent.data.success) {
-      snackbarStore.setSnackbar(true, 'Parent updated', 'success');
-      console.log(updatedParent.data.data);
+          newUser = {
+            ...newUser,
+            parent: updatedP,
+          };
+          userStore.setAuthUser(newUser);
+        } else {
+          handleSnackbarMessage('User not updated', 'error');
+        }
+      })
+      .catch((err) => {
+        handleSnackbarMessage(err.response.data.message, 'error');
+      });
+  };
 
-      const updatedP: Parent = updatedParent.data.data;
-      updatedP.address = {
-        addressId: parent?.address.addressId!,
-        street: parent?.address.street!,
-        city: parent?.address.city!,
-        zipcode: parent?.address.zipcode!,
-        location: {
-          country: parent?.address.location.country!,
-          locationId: parent?.address.location.locationId!,
-        },
-      };
-
-      newUser = {
-        ...updatedUser.data.data,
-        parent: updatedP,
-      };
-      newUser && userStore.setAuthUser(newUser);
-      console.log(newUser);
-    } else {
-      snackbarStore.setSnackbar(true, 'update incomplete', 'error');
-    }
+  const handleSnackbarMessage = (message: string, status: AlertColor) => {
+    snackbarStore.setSnackbar(true, message, status);
   };
 
   return (
@@ -125,27 +115,26 @@ function Profile() {
         onSubmit={handleSubmit}
       >
         <FormControl>
-          <Grid container spacing={2}>
+          <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <StyledInputField
+                autoComplete="username"
                 name="email"
                 label="Email"
-                defaultValue={user?.email}
+                defaultValue={authUser?.email}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <StyledInputField
+                autoComplete="current-password"
+                type="password"
                 name="password"
                 label="Password"
                 placeholder="new Password"
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
             <Grid item xs={12} md={6}>
               <StyledInputField
                 name="firstName"
@@ -179,10 +168,6 @@ function Profile() {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
-            <Grid item xs={12} md={6}></Grid>
             <Grid item xs={12} md={6}>
               <StyledInputField
                 name="street"
@@ -215,11 +200,21 @@ function Profile() {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} md={6}></Grid>
+            <Grid item xs={12} md={12}>
+              <Button
+                variant="outlined"
+                size="large"
+                type="submit"
+                sx={{
+                  width: '20%',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
+              >
+                Save
+              </Button>
+            </Grid>
           </Grid>
-          <Button type="submit" sx={{ alignSelf: 'flex-end', mt: 2 }}>
-            Save
-          </Button>
         </FormControl>
       </Box>
     </div>
