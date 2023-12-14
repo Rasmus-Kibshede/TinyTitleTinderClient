@@ -1,215 +1,353 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Copyright from "../components/Copyright";
-import validator from "validator";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-const defaultTheme = createTheme();
+import {
+  Button,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Select,
+  InputLabel,
+  FormControl,
+  MenuItem,
+} from '@mui/material';
+import validator from 'validator';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { Country } from '../../types/country';
+import { signup, locations } from '../../paths/urls';
+import { useSnackbarDisplay } from '../../store/snackbarDisplay';
+import styled from '@emotion/styled';
+import { StyledInputField } from '../reusables/ReusablesStyling';
 
 export default function SignUp() {
-  const [firstnameError, setFirstnameError] = useState(false);
-  const [lastnameError, setLastnameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [formValid, setFormValid] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isValidFirstname, setIsValidFirstname] = useState<boolean>(false);
+  const [isValidLastname, setIsValidLastname] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [selectedCountryName, setSelectedCountryName] = useState<string>('');
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [city, setCity] = useState<string>('');
+  const [zipcode, setZipcode] = useState<string>('');
+  const [street, setStreet] = useState<string>('');
+  const [age, setAge] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const snackbarStore = useSnackbarDisplay();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const locationsResponse = await axios.get(locations);
+      const result = await locationsResponse.data.data;
+      setCountries(result);
+    };
+    fetchLocations();
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-    if (
-      firstnameError ||
-      lastnameError ||
-      emailError ||
-      passwordError ||
-      !firstname ||
-      !lastname ||
-      !email ||
-      !password
-    ) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
+    try {
+       const getCountryObejct = countries.find(
+         (c) => c.country === selectedCountryName
+        );
+
+      if (!getCountryObejct) {
+         snackbarStore.setSnackbar(true, 'No country found', 'error');
+       } else {
+      const response = await axios.post(signup, {
+        email: data.get('email'),
+        password: data.get('password'),
+        age: data.get('age'),
+        gender: data.get('gender'),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        locationId: 1,
+        city: data.get('city'),
+        zipcode: data.get('zipcode'),
+        street: data.get('street'),
+      });
+      response.data;
+      snackbarStore.setSnackbar(true, 'You are signed up', 'success');
+      navigate('/signin');
     }
-    setOpen(true);
-
-    setTimeout(() => {
-      setOpen(false);
-    }, 6000);
+    } catch (error) {
+      error;
+      snackbarStore.setSnackbar(true, 'Invalid input try again', 'error');
+    }
   };
 
-  const validateFirstname = (firstname: string) => {
-    return firstname.length > 0 && firstname.length < 255;
-  };
-
-  const validateLastname = (lastname: string) => {
-    return lastname.length > 0 && lastname.length < 255;
-  };
-
-  const handleClose = (): void => {
-    setOpen(false);
+  const validateStringLength = (value: string, min: number, max: number) => {
+    
+    return !(
+      validator.isAlpha(value) &&
+      validator.isLength(value, {
+        min: min,
+        max: max,
+      })
+    );
   };
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        <StyledBox>
           <Box
-            sx={{
-              marginTop: 15,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography
+            fontSize={48}
+            fontFamily={"Josefin Sans"}
+            color={"#27963C"}
+            letterSpacing={"0.4px"}
+            fontWeight={"regular"}
+            textAlign={"center"}
+            >
+              TinyTitleTinder
+            </Typography>
+            <Typography 
+              component="h1" 
+              variant="h5" 
+              marginBottom={'10px'} 
+              fontFamily={"Josefin Sans"}>
               Sign up
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    error={firstnameError}
-                    value={firstname}
-                    required
-                    fullWidth
-                    name="firstName"
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    onChange={(e) => {
-                      setFirstname(e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      setFirstnameError(!validateFirstname(e.target.value));
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    error={lastnameError}
-                    value={lastname}
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                    onChange={(e) => {
-                      setLastname(e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      setLastnameError(!validateLastname(e.target.value));
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    error={emailError}
-                    value={email}
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email address"
-                    name="email"
-                    autoComplete="email"
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      setEmailError(!validator.isEmail(e.target.value));
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    error={passwordError}
-                    value={password}
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      setPasswordError(
-                        !validator.isStrongPassword(e.target.value)
-                      );
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  autoComplete="given-name"
+                  error={isValidFirstname}
+                  helperText={isValidFirstname && 'Invalid firstname'}
+                  required
+                  fullWidth
+                  name="firstName"
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={(e) => {
+                    setIsValidFirstname(validateStringLength(e.target.value, 2, 40));
+                  }}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  error={isValidLastname}
+                  helperText={isValidLastname && 'Invalid lastname'}
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                  onChange={(e) => {
+                    setIsValidLastname(validateStringLength(e.target.value, 2, 40));
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  error={!validator.isEmail(email)}
+                  value={email}
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                style={{ marginBottom: '40px', width: '600px' }}
               >
-                Sign Up
-              </Button>
-              {formValid ? (
-                <Snackbar open={open}>
-                  <Alert
-                    onClose={handleClose}
-                    severity="success"
-                    sx={{ width: "100%" }}
-                  >
-                    Sign up successful
-                  </Alert>
-                </Snackbar>
-              ) : (
-                <Snackbar open={open}>
-                  <Alert
-                    onClose={handleClose}
-                    severity="error"
-                    sx={{ width: "100%" }}
-                  >
-                    Something went wrong, please try again
-                  </Alert>
-                </Snackbar>
-              )}
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Typography variant="body2">
-                  <Link to="/signin">
-                    Already have an account? Sign in
-                  </Link>
-                  </Typography>
-                </Grid>
+                <StyledInputField
+                  error={!validator.isStrongPassword(password)}
+                  value={password}
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
               </Grid>
-            </Box>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  autoComplete="given-name"
+                  error={!validator.isNumeric(age)}
+                  value={age}
+                  required
+                  fullWidth
+                  name="age"
+                  id="age"
+                  label="Age"
+                  autoFocus
+                  onChange={(e) => {
+                    setAge(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  autoComplete="given-name"
+                  error={validateStringLength(gender, 4, 6)}
+                  value={gender}
+                  required
+                  fullWidth
+                  name="gender"
+                  id="gender"
+                  label="Gender"
+                  autoFocus
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl required sx={{ m: 0, minWidth: 285 }}>
+                  <InputLabel id="demo-simple-select-label">
+                    Select a country
+                  </InputLabel>
+                  <Select
+                    error={validator.isEmpty(selectedCountryName)}
+                    value={selectedCountryName}
+                    fullWidth
+                    name="country"
+                    id="country"
+                    label="Select a country"
+                    autoFocus
+                    sx={{
+                      '& fieldset': {
+                        borderColor: 'green',
+                      },
+                    }}
+                    onChange={(e) => {
+                      setSelectedCountryName(e.target.value);
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 200,
+                        },
+                      },
+                    }}
+                  >
+                    {countries ? (
+                      countries.map((location) => (
+                        <MenuItem
+                          key={location.country}
+                          value={location.country}
+                        >
+                          {location.country}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem>no countries</MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  error={!validator.isAlpha(city)}
+                  value={city}
+                  required
+                  fullWidth
+                  name="city"
+                  id="city"
+                  label="City"
+                  autoFocus
+                  onChange={(e) => {
+                    setCity(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  error={!validator.isAlphanumeric(zipcode)}
+                  value={zipcode}
+                  required
+                  fullWidth
+                  name="zipcode"
+                  id="zipcode"
+                  label="Zipcode"
+                  autoFocus
+                  onChange={(e) => {
+                    setZipcode(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <StyledInputField
+                  error={validator.isEmpty(street)}
+                  value={street}
+                  required
+                  fullWidth
+                  name="street"
+                  id="street"
+                  label="Street"
+                  autoFocus
+                  onChange={(e) => {
+                    setStreet(e.target.value);
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <Grid item container xs={4} spacing={1}>
+              <Grid item xs={6}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    mt: 1,
+                    backgroundColor: '#27963C',
+                    '&:hover': {
+                      backgroundColor: 'green',
+                    },
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Link to="/">
+                  <StyledButton type="submit" variant="contained">
+                    Cancel
+                  </StyledButton>
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
-        </Container>
-      </ThemeProvider>
+        </StyledBox>
+      </Container>
     </>
   );
 }
+
+const StyledBox = styled(Box)`
+  margin-top: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 9%;
+  color: black;
+  background-color: transparent;
+  &:hover {
+    background-color: red;
+  }
+`;
