@@ -30,7 +30,6 @@ function AccountSettings() {
         newPassword: formData.get('password'),
       })
       .then((res) => {
-        console.log(res);
         handleSnackbarMessage('User updated', 'success');
 
         if (res.data.success) {

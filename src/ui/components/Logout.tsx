@@ -10,29 +10,26 @@ function Logout() {
   const navigate = useNavigate();
   const snackbarStore = useSnackbarDisplay();
 
-
   const logoutUser = async () => {
-    try {
-      await axios.get(logout, {
+    await axios
+      .get(logout, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
+      })
+      .then(() => {
+        user.resetAuthUser();
+      })
+      .catch((err) => {
+        snackbarStore.setSnackbar(true, err.response.data.message, 'error');
       });
-      user.resetAuthUser();
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-      } else {
-        console.log(error);
-      }
-    }
 
     snackbarStore.setSnackbar(true, 'You are logged out', 'success');
     navigate('/signin');
   };
 
   return (
-    <Button onClick={logoutUser} variant="contained">
+    <Button onClick={logoutUser} variant="contained" sx={{margin: '0px 10px'}}>
       Logout
     </Button>
   );

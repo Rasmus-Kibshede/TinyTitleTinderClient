@@ -24,8 +24,7 @@ export default function SignIn() {
   const [isValidPassword, setIsValidPassword] = useState<boolean>(false);
 
   const user = useAuthUserStore();
-  console.log(user);
-  
+
   const snackbarStore = useSnackbarDisplay();
   const navigate = useNavigate();
 
@@ -43,22 +42,27 @@ export default function SignIn() {
   }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const response = await axios.post(login, {
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    await axios
+      .post(login, {
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+      .then((res) => {
+        if (res.data.success) {
+          user.setAuthUser(res.data.data.user);
+          user.setToken(res.data.data.token);
+          Cookie.set('jwt', res.data.data.token);
 
-    if (response.data.success) {
-      user.setAuthUser(response.data.data.user);
-      user.setToken(response.data.data.token);
-      Cookie.set('jwt', response.data.data.token);
+          snackbarStore.setSnackbar(true, 'You are logged in', 'success');
 
-      snackbarStore.setSnackbar(true, 'You are logged in', 'success');
-
-      navigate('/profile');
-    } else {
-      snackbarStore.setSnackbar(true, 'Invalid email or password', 'error');
-    }
+          navigate('/swipe');
+        } else {
+          snackbarStore.setSnackbar(true, 'Invalid email or password', 'error');
+        }
+      })
+      .catch((err) => {
+        snackbarStore.setSnackbar(true, err.response.data.message, 'error');
+      });
   };
 
   return (

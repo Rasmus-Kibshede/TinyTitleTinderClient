@@ -24,7 +24,6 @@ function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route element={<ProtectedRoute redirectPath="signin" />}>
-            <Route path="/profile" element={<AccountSettings />} />
             <Route path="/swipe" element={<Swipe />} />
             <Route path="/tinyTitleTies" element={<TinyTitleTies />} />
             <Route path="/likedNames" element={<LikedNames />} />

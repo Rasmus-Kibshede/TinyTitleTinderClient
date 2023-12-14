@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { checkAuthPath } from '../paths/urls';
 import { useAuthUserStore } from '../store/user';
+import { useSnackbarDisplay } from '../store/snackbarDisplay';
 
 interface Props {
   redirectPath: string;
@@ -11,6 +12,7 @@ interface Props {
 function ProtectedRoute({ redirectPath }: Props) {
   const [userAuth, setUserAuth] = useState<boolean>(false);
   const user = useAuthUserStore();
+  const snackbarStore = useSnackbarDisplay();
 
   useEffect(() => {
     const authCheck = async () => {
@@ -23,18 +25,14 @@ function ProtectedRoute({ redirectPath }: Props) {
 
         setUserAuth(data.data);
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error.response?.data);
-        } else {
-          console.log(error);
-        }
+        snackbarStore.setSnackbar(true, 'Access not granted', 'error');
       }
     };
 
     if (user.authUser) {
       authCheck();
     } else {
-      // mesasage here
+      snackbarStore.setSnackbar(true, 'Access not granted', 'error');
     }
   }, [user.authUser, user.token, userAuth]);
 

@@ -9,9 +9,10 @@ interface SearchNameModalProps {
     selectedName: Name;
 }
 
+
 const SearchNameModal = ({ open, onClose, selectedName }: SearchNameModalProps) => {
     return (
-        <Modal keepMounted open={open} onClose={onClose}>
+        <Modal keepMounted open={open} onClose={onClose} sx={{marginTop: '10%'}}>
             <StyledBox gender={selectedName?.gender || 'unisex'}>
                 <NameSuggest name={selectedName} isReadMore={true} ></NameSuggest>
             </StyledBox>

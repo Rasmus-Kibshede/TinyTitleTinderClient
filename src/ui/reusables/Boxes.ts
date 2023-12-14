@@ -9,11 +9,10 @@ export const StyledBox = styled(Box) <StyledBoxProps>`
     height: 550px;
     width: 900px;
     border-radius: 56px;
-    margin: auto;
+    margin: 0px auto;
     text-align: center;
     padding: 4;
     border: 3px solid #CBCBCB;
-    margin-top: 5%;
     background-color: ${({ gender }) => {
         switch (gender.toLowerCase()) {
             case 'female':

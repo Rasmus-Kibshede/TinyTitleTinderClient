@@ -12,7 +12,7 @@ const NameSuggest = ({ name, isReadMore }: NameSuggestProps) => {
             {name && (
                 <>
                     <Typography variant="h4">{name.nameSuggestName}</Typography>
-                    <StyledBox>
+                    <StyledBox sx={{marginTop: '5%'}}>
                         {renderField("Meaning", name.origins[0]?.definition?.meaning, "No meaning available", isReadMore)}
                         {renderField("Gender", name.gender, "No gender available", isReadMore)}
                         {renderField("Description", name.origins[0]?.description, "No description available", isReadMore)}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Logout from './Logout';
 import { useAuthUserStore } from '../../store/user';
 import { SideNavBar } from './SideNavBar';
-import SearchName from "./SearchName";
+import SearchName from './SearchName';
 
 export default function MainMenuNavBar() {
   const user = useAuthUserStore();
@@ -13,9 +13,22 @@ export default function MainMenuNavBar() {
       <Toolbar sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
         <>
           <Typography variant="h6">
-            <Link style={linkStyle} to="/">Home</Link>
-            <Link style={linkStyle} to="about">About</Link>
-            <Link style={linkStyle} to="contact">Contact</Link>
+            <Link style={linkStyle} to="/">
+              Home
+            </Link>
+            <Link style={linkStyle} to="about">
+              About
+            </Link>
+            <Link style={linkStyle} to="contact">
+              Contact
+            </Link>
+            {user.authUser && (
+              <>
+                <Link style={linkStyle} to="swipe">
+                  Swipe
+                </Link>
+              </>
+            )}
           </Typography>
         </>
         <SearchName />
@@ -23,22 +36,25 @@ export default function MainMenuNavBar() {
           {user.authUser ? (
             <>
               <Logout />
-              <Link style={linkStyle} to="swipe">Swipe</Link>
+              <SideNavBar />
             </>
           ) : (
             <>
-              <Link style={linkStyle} to="signup">Signup</Link>
-              <Link style={linkStyle} to="signin">Login</Link>
+              <Link style={linkStyle} to="signup">
+                Signup
+              </Link>
+              <Link style={linkStyle} to="signin">
+                Login
+              </Link>
             </>
           )}
-          <SideNavBar />
         </Typography>
       </Toolbar>
     </AppBar>
-  )
+  );
 }
 
 const linkStyle = {
-  marginRight: "10px",
-  color: "black",
+  marginRight: '10px',
+  color: 'black',
 };
