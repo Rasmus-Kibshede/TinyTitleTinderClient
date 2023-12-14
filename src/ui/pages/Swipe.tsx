@@ -29,14 +29,14 @@ const Swipe = () => {
                 const response = await axios.get(`${getName}${userStore.authUser?.parent.parentId}`);
                 setNames(response.data.data);
             } catch (error) {
-                snackbarStore.setSnackbar(true, 'Server1 problems, please try again later', 'error');
+                snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
             }
         };
         fetchName();
     }, []);
 
     useEffect(() => {
-        if (!isMouseOver && likedNames.length > 0 && dislikedNames.length > 0) {
+        if (!isMouseOver) {
 
             if (!userStore.authUser?.parent.parentId) {
                 return snackbarStore.setSnackbar(true, 'Error: User not found', 'error');
@@ -51,7 +51,7 @@ const Swipe = () => {
                     setDislikedNames([]);
                 })
                 .catch(() => {
-                    snackbarStore.setSnackbar(true, 'Server2 problems, please try again later', 'error');
+                    snackbarStore.setSnackbar(true, 'Server problems, please try again later', 'error');
                 });
         }
     }, [isMouseOver]);
