@@ -17,14 +17,16 @@ function Profile() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.currentTarget);
     let userPlaceholder: User | null = null;
 
     await axios
       .put(updateUser, {
         email: authUser?.email,
-        newEmail: formData.get('email') ? formData.get('email') : authUser?.email,
+        newEmail: formData.get('email')
+          ? formData.get('email')
+          : authUser?.email,
         newPassword: formData.get('password'),
       })
       .then((res) => {
