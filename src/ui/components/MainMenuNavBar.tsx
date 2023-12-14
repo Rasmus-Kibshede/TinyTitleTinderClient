@@ -24,6 +24,7 @@ export default function MainMenuNavBar() {
             <>
               <Logout />
               <Link style={linkStyle} to="profile">Profile</Link>
+              <Link style={linkStyle} to="swipe">Swipe</Link>
             </>
           ) : (
             <>
