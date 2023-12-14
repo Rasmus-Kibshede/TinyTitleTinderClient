@@ -1,4 +1,4 @@
-const base = 'http://localhost:3000/';
+const base = 'https://tinytitletinderserver.azurewebsites.net/';
 
 export const getNames = `${base}names`;
 export const getName = `${base}names/parent/`;
