@@ -1,4 +1,4 @@
-import { SideDrawer } from "./Drawer";
+import { SideDrawer } from "../../ui/components/Drawer";
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 /**
