@@ -23,7 +23,6 @@ export default function MainMenuNavBar() {
           {user.authUser ? (
             <>
               <Logout />
-              <Link style={linkStyle} to="profile">Profile</Link>
               <Link style={linkStyle} to="swipe">Swipe</Link>
             </>
           ) : (

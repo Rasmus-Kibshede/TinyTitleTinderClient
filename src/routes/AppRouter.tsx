@@ -6,11 +6,13 @@ import SignIn from '../ui/pages/SignIn';
 import SignUp from '../ui/pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 import Home from '../ui/pages/Home';
-import Profile from '../ui/pages/Profile';
+import AccountSettings from '../ui/pages/AccountSettings';
 import Swipe from '../ui/pages/Swipe';
+import TinyTitleTies from '../ui/pages/TinyTitleTies';
+import LikedNames from '../ui/pages/LikedNames';
+// import AccountSettings from '../ui/pages/accountSettings';
 
 function AppRouter() {
-
   // Example how to use user store
   return (
     <BrowserRouter>
@@ -22,8 +24,11 @@ function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route element={<ProtectedRoute redirectPath="signin" />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/swipe" element={<Swipe/>} />
+            <Route path="/profile" element={<AccountSettings />} />
+            <Route path="/swipe" element={<Swipe />} />
+            <Route path="/tinyTitleTies" element={<TinyTitleTies />} />
+            <Route path="/likedNames" element={<LikedNames />} />
+            <Route path="/accountSettings" element={<AccountSettings />} />
           </Route>
         </Route>
       </Routes>

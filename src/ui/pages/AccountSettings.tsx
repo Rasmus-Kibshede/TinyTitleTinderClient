@@ -9,7 +9,7 @@ import { useSnackbarDisplay } from '../../store/snackbarDisplay';
 import { User } from '../../types/user';
 import { Parent } from '../../types/parent';
 
-function Profile() {
+function AccountSettings() {
   const userStore = useAuthUserStore();
   const authUser = userStore.authUser;
   const parent = userStore.authUser?.parent;
@@ -223,4 +223,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default AccountSettings;
