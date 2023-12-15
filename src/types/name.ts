@@ -4,6 +4,6 @@ export interface Name {
     nameSuggestName: string,
     origins: Origin[],
     gender: string,
-    nameDay: string,
-    namesake: string
+    nameDays: string,
+    namesakes: string
 }
