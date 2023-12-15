@@ -19,8 +19,8 @@ const NameSuggest = ({ name, isReadMore }: NameSuggestProps) => {
                         {renderField("Religion", name.origins[0]?.religion, "No religion specified", isReadMore)}
                         {isReadMore && (
                             <>
-                                {renderField("Namesake", name.namesake, "No namesake specified", isReadMore)}
-                                {renderField("Name Day", name.nameDay, "No name day specified", isReadMore)}
+                                {renderField("Namesake", name.namesakes, "No namesake specified", isReadMore)}
+                                {renderField("Name Day", name.nameDays, "No name day specified", isReadMore)}
                             </>
                         )}
                     </StyledBox>

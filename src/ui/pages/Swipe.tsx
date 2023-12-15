@@ -82,6 +82,9 @@ const Swipe = () => {
 
         setIsReadMore(false);
     }
+
+    console.log(names[currentIndex]);
+    
     
     return (
         <>
